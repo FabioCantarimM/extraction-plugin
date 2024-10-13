@@ -13,6 +13,7 @@ function handleSearchPage() {
             messageBox.style.border = '2px solid #4CAF50';
             messageBox.style.backgroundColor = '#f9f9f9';
             messageBox.style.fontSize = '16px';
+            messageBox.style.overflow = 'overlay';
             messageBox.style.display = 'none'; // Inicialmente escondido
 
             // Cria um botão de toggle
@@ -26,12 +27,24 @@ function handleSearchPage() {
                 if (messageBox.style.display === 'none') {
                     messageBox.style.display = 'block';
                     toggleButton.innerText = 'Menos informações';
+                    chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
+                        if (response.error) {
+                            console.error('Erro ao buscar informações do produto:', response.error);
+                        } else {
+                            const productInfo = response;
+                            const productName = productInfo.name || 'Nome não disponível';
+                            const productPrice = productInfo.total_vendas || 'Preço não disponível';
+                            messageBox.innerText = ""
+                            messageBox.innerHTML = `Nome do Produto: ${productName};<br>Total de Vendas: ${productPrice}<br>Crescimento D30: ${productInfo.crescimento};<br>SKU: ${productInfo.sku};<br>EAN: ${productInfo.ean};<br>Dump Banco: ${JSON.stringify(response)}`;
+                        }
+                    })
                 } else {
                     messageBox.style.display = 'none';
                     toggleButton.innerText = 'Mais informações';
                 }
             });
             
+            item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
