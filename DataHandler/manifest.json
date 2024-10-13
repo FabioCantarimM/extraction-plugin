@@ -4,7 +4,7 @@
     "version": "1.0",
     "description": "Escreve 'Hello World' no site da Drogaria Raia",
     "icons": {
-      "48": "icon.png"
+      "48": "./image/icon.png"
     },
     "permissions": [
       "activeTab",
@@ -19,11 +19,16 @@
     "content_scripts": [
       {
         "matches": ["*://www.drogaraia.com.br/*"],
-        "js": ["content.js"]
+        "js": [ 
+          "tools/index.js",
+          "components/product.js", 
+          "components/search.js",
+          "content.js"
+        ]
       }
     ],
     "action": {
-      "default_icon": "icon.png"
+      "default_icon": "./image/icon.png"
     }
   }
   
