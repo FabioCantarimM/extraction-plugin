@@ -11,3 +11,18 @@ function checkUrlAndExecute() {
         handleProductPage();
     }
 }
+
+
+function extractDomainFromUrl(text) {
+    // Expressão regular para validar e capturar a URL
+    const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,})?/;
+
+    const match = text.match(urlPattern);
+
+    if (match) {
+        // Retorna apenas o domínio sem o TLD
+        return match[3]; // Retorna apenas o domínio
+    }
+
+    return null; // Retorna null se não for uma URL válida
+}
