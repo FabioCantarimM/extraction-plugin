@@ -1,7 +1,7 @@
-function handleSearchPage() {
+function handleSearchPage(searchTag) {
     setTimeout(() => {
         const searchElements = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-1lryd20-1.hEcJif.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div');
-
+    
         searchElements.forEach((item) => {
             const productId = item.getAttribute('data-item-id');
 

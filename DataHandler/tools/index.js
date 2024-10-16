@@ -1,28 +1,27 @@
-function getElementByXPath(xpath) {
-    return document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-}
-
 function checkUrlAndExecute() {
     const currentUrl = window.location.href;
+    const cleanUrl = extractPathFromUrl(currentUrl);
 
-    if (currentUrl.includes("/search?")) {
+    // Verifica se cleanUrl é nulo ou vazio
+    if (!cleanUrl) {
+        console.log("URL sem caminho, apenas o domínio.");
+        return;
+    }
+
+    // Caso contenha "search"
+    if (cleanUrl.includes("search")) {
         handleSearchPage();
-    } else {
+    }
+
+    // Divide o cleanUrl pelo "/"
+    const pathParts = cleanUrl.split('/').filter(Boolean); // Filtra strings vazias
+
+    // Se tiver apenas um elemento após o split
+    if (pathParts.length === 1) {
         handleProductPage();
+    } 
+    // Se tiver mais de um elemento, passa o vetor de resultados
+    else if (pathParts.length > 1) {
+        handleCategoryPage(pathParts);
     }
-}
-
-
-function extractDomainFromUrl(text) {
-    // Expressão regular para validar e capturar a URL
-    const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,})?/;
-
-    const match = text.match(urlPattern);
-
-    if (match) {
-        // Retorna apenas o domínio sem o TLD
-        return match[3]; // Retorna apenas o domínio
-    }
-
-    return null; // Retorna null se não for uma URL válida
 }

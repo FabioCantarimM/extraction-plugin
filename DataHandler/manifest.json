@@ -20,9 +20,12 @@
       {
         "matches": ["*://www.drogaraia.com.br/*"],
         "js": [ 
+          "tools/url.js",
+          "tools/tags.js",
           "tools/index.js",
           "components/product.js", 
           "components/search.js",
+          "components/category.js",
           "content.js"
         ]
       }
