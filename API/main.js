@@ -22,7 +22,7 @@ app.get('/api/produtos/:sku', async (req, res) => {
     const { sku } = req.params;
     try {
         console.log('SKU recebido:', sku); // Log do SKU recebido
-        const result = await pool.query('SELECT * FROM piloto_plugin WHERE sku_monitorado = $1', [sku]);
+        const result = await pool.query('SELECT * FROM produtos_raia WHERE sku_monitorado = $1', [sku]);
 
         // Verifica se algum produto foi encontrado
         if (result.rows.length === 0) {
