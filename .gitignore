@@ -2,3 +2,4 @@
 node_modules/
 *.csv
 *.pem
+ec2-finalquest.pem
