@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const productId = request.productId; // Assume que o ID do produto está sendo enviado na requisição
 
         // Faz a requisição para o servidor local
-        fetch(`http://localhost:3000/api/produtos/${productId}`)
+        fetch(`http://ec2-23-20-72-33.compute-1.amazonaws.com:3000/api/produtos/${productId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

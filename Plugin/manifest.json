@@ -14,7 +14,12 @@
       "*://www.drogaraia.com.br/*"
     ],
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "background.js",
+      "scritps":[
+        "components/search.js",
+        "components/product.js", 
+        "components/category.js"
+      ]
     },
     "content_scripts": [
       {
