@@ -2,38 +2,63 @@
 function handleProductCategoryPage() {
     setTimeout(() => {
         const searchElements = document.querySelectorAll('#__next > main > div:nth-child(5) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.hcbctD.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div');
-    
+        // Cria o elemento <link>
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+        // Adiciona o link ao <head> do documento
+        document.head.appendChild(link);
+
         searchElements.forEach((item) => {
             const productId = item.getAttribute('data-item-id');
 
             // Criação do Comparador de Preço
             const additionalInfo = document.createElement('div');
+
+            // Primeiro Elemento do Gráfico
             const fristLine = document.createElement('div');
             fristLine.style.cssText = `
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 8px;
-                height: 30px;
+                height: 25px;
+                background-color: #a2a2a23b;
+                border-radius: 5px;
+                padding-right: 5px;
+                padding-left: 5px;
             `;
-            const infoImage = document.createElement('img');
-            infoImage.src = 'https://scontent.fcgh11-1.fna.fbcdn.net/v/t39.30808-1/453164228_909535137884186_3994319304934725751_n.jpg?stp=dst-jpg_s480x480&_nc_cat=1&ccb=1-7&_nc_sid=f4b9fd&_nc_ohc=r6aaL40dg9wQ7kNvgHG5Aaq&_nc_ht=scontent.fcgh11-1.fna&_nc_gid=ASjO8e5F5yhi5uIu6upW2OP&oh=00_AYB9aO58tSDXVK6vrn5fbA03OS_Z86piiANbkcXLlrW9Uw&oe=6721AA67'; // Substitua pelo URL da imagem desejada
-            infoImage.alt = 'Imagem';
-            infoImage.style.cssText = `
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                max-width: 25px;
-                max-height: 25px;
+            const ficon = document.createElement('i');
+            ficon.className = 'material-icons';
+            ficon.textContent = 'trending_up';
+            ficon.style.fontSize = '15px';
+            ficon.style.fontWeight = '800';
+            ficon.style.color = 'white';
+            ficon.style.backgroundColor = 'green';
+
+            const fdescript = document.createElement('span');
+            fdescript.style.marginLeft = "-50%";
+            fdescript.innerText = " Panvel";
+
+            const infoKeyText = document.createElement('span');
+            infoKeyText.appendChild(ficon);
+            infoKeyText.appendChild(fdescript);
+            infoKeyText.style.cssText = `
+                font-size: 10px;
+                font-weight: 800;
+                color: black;
+                display: contents;
             `;
 
-            const infoText = document.createElement('span');
-            infoText.innerText = 'Melhor oferta'; // Substitua pelo texto desejado
-            infoText.style.cssText = `
+            const infoValueText = document.createElement('span');
+            infoValueText.innerText = 'R$ 63,00';
+            infoValueText.style.cssText = `
                 font-size: 10px;
                 font-weight: 800;
                 color: black;
             `;
+
             // Second Line
             const secondLine = document.createElement('div');
             secondLine.style.cssText = `
@@ -41,64 +66,51 @@ function handleProductCategoryPage() {
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 8px;
-                height: 30px;
+                height: 25px;
+                background-color: #a2a2a23b;
+                border-radius: 5px;
+                padding-right: 5px;
+                padding-left: 5px;
             `;
-            const infoImage2 = document.createElement('img');
-            infoImage2.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-mvcIXBjxID5xLlR8YiY8aZaLivG_CdyFyw&s'; // Substitua pelo URL da imagem desejada
-            infoImage2.alt = 'Imagem';
-            infoImage2.style.cssText = `
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                max-width: 25px;
-                max-height: 25px;
-            `;
+            const sicon = document.createElement('i');
+            sicon.className = 'material-icons';
+            sicon.textContent = 'trending_down';
+            sicon.style.fontSize = '15px';
+            sicon.style.fontWeight = '800';
+            sicon.style.color = 'white';
+            sicon.style.backgroundColor = 'red';
 
-            const infoText2 = document.createElement('span');
-            infoText2.innerText = 'Melhor frete'; // Substitua pelo texto desejado
-            infoText2.style.cssText = `
+            const sdescript = document.createElement('span');
+            sdescript.style.marginLeft = "-37%";
+            sdescript.innerText = " Pague Menos";
+
+            const sinfoKeyText = document.createElement('span');
+            sinfoKeyText.appendChild(sicon);
+            sinfoKeyText.appendChild(sdescript);
+            sinfoKeyText.style.cssText = `
                 font-size: 10px;
                 font-weight: 800;
                 color: black;
-            `;
-            // Third Line
-            const thirdLine = document.createElement('div');
-            thirdLine.style.cssText = `
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 8px;
-                height: 30px;
-            `;
-            const infoImage3 = document.createElement('img');
-            infoImage3.src = 'https://scontent.fcgh11-1.fna.fbcdn.net/v/t39.30808-1/384575182_742854527881039_1046787814209401339_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=f4b9fd&_nc_ohc=m53Gn4F38-MQ7kNvgHp-TzL&_nc_ht=scontent.fcgh11-1.fna&_nc_gid=Aa-pKnGDW3fJUegLPw0sxhv&oh=00_AYB4zXQoTFH_30VrWJyC-9FE6UG0Djh9J8uAxTo2wDQUHA&oe=6721F40F'; // Substitua pelo URL da imagem desejada
-            infoImage3.alt = 'Imagem';
-            infoImage3.style.cssText = `
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                max-width: 25px;
-                max-height: 25px;
+                display: contents;
             `;
 
-            const infoText3 = document.createElement('span');
-            infoText3.innerText = 'Melhor Forma de Pagamento'; // Substitua pelo texto desejado
-            infoText3.style.cssText = `
+            const sinfoValueText = document.createElement('span');
+            sinfoValueText.innerText = 'R$ 63,00';
+            sinfoValueText.style.cssText = `
                 font-size: 10px;
                 font-weight: 800;
                 color: black;
-            `;
-            
+            `;  
 
             // Criação da caixa de mensagem
             const messageBox = document.createElement('div');
+            // border-radius: 10px;
+            // border: 1px solid #ccc;
+            // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             messageBox.style.cssText = `
                 margin-top: 10px;
                 padding: 15px;
-                border-radius: 10px;
                 background-color: #fff;
-                border: 1px solid #ccc;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 font-size: 14px;
                 color: #333;
                 display: none;
@@ -111,24 +123,23 @@ function handleProductCategoryPage() {
             divButton.style.cssText = `
                 width: 100%;
                 text-align: center;
-                pagging-top: 10px;
                 padding-bottom: 10px;
             `;
 
             const toggleButton = document.createElement('button');
             toggleButton.innerText = '+';
+            // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
             toggleButton.style.cssText = `
-                width: 30px;
-                height: 30px;
+                width: 20px;
+                height: 20px;
                 border-radius: 50%;
                 background-color: transparent; /* Fundo transparente */
                 color: black; /* Cor do texto */
-                font-size: 18px; /* Tamanho do texto */
+                font-size: 15px; /* Tamanho do texto */
                 font-weight: bold; /* Negrito para o símbolo */
                 border: 1px solid black; /* Borda preta */
                 align-items: center;
                 cursor: pointer; /* Muda o cursor para indicar interatividade */
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
                 transition: background-color 0.3s ease, color 0.3s ease; /* Transição suave para mudanças de cor */
             `;
 
@@ -145,7 +156,21 @@ function handleProductCategoryPage() {
             toggleButton.addEventListener('click', () => {
                 if (messageBox.style.display === 'none') {
                     messageBox.style.display = 'block';
-                    toggleButton.innerText = '-';
+                    toggleButton.innerText = "";
+
+                    const icon = document.createElement('i');
+
+                    // Adiciona a classe do Material Icons
+                    icon.className = 'material-icons';
+
+                    // Define o texto do ícone
+                    icon.textContent = 'close';
+
+                    // Adiciona estilos diretamente
+                    icon.style.fontSize = '15px';
+                    icon.style.fontWeight = '800';
+
+                    toggleButton.appendChild(icon);
 
                     chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
                         if (response.error) {
@@ -175,60 +200,53 @@ function handleProductCategoryPage() {
                             // Adiciona o conteúdo estilizado ao messageBox
                             messageBox.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">SKU</span><span style="text-align:end;width: 50%;font-size: 12px; font-weight: 800;">${productSKU}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -65px;">bar_chart</i>
+                                        IC
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">98%</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Website</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800; overflow-wrap: break-word;"><a href='${productWebsite}' target="_blank" style="color: red;">${website}</a></span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -20px;">attach_money</i>
+                                        Vendas Hoje
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 217,20</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Data Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productData}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -25px;">attach_money</i>
+                                        Vendas S-1
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 1.520,40</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Hora Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productHora}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -20px;">attach_money</i>
+                                        Vendas mês
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 6.081,60</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preço Normal</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoNormal}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 0px;">pageview</i>
+                                        Volume de Visitas
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">14.983.214</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preço Oferta</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoOferta}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 0px;">trending_up</i>
+                                        Taxa de Conversão
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">4,3%</span>
                                 </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco de</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoDe}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco Unid. Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoUnidadePacote}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco Laboratório</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoLaboratorio}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Informações do Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${infPacotes}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Validade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${validade}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Disponibilidade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${disponibilidade}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Vendido Por</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPor}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Vendido por Ranking</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPorRanking}</span>
-                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             `;
                         }
                     });
@@ -244,18 +262,14 @@ function handleProductCategoryPage() {
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('hr'));
-            fristLine.appendChild(infoImage);
-            fristLine.appendChild(infoText);
+            fristLine.appendChild(infoKeyText);
+            fristLine.appendChild(infoValueText);
+            secondLine.appendChild(sinfoKeyText);
+            secondLine.appendChild(sinfoValueText);
             additionalInfo.appendChild(fristLine);
-            secondLine.appendChild(infoImage2);
-            secondLine.appendChild(infoText2);
             additionalInfo.appendChild(secondLine);
-            thirdLine.appendChild(infoImage3);
-            thirdLine.appendChild(infoText3);
-            additionalInfo.appendChild(thirdLine);
             item.appendChild(additionalInfo);
             item.appendChild(messageBox);
-            item.appendChild(document.createElement('br'));
             divButton.appendChild(toggleButton)
             item.appendChild(divButton);
         });
