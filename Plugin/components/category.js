@@ -233,7 +233,7 @@ function handleProductCategoryPage() {
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 0px;">pageview</i>
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 2px;">pageview</i>
                                         Volume de Visitas
                                     </span>
                                     <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">14.983.214</span>
@@ -241,7 +241,7 @@ function handleProductCategoryPage() {
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 0px;">trending_up</i>
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 7px;">trending_up</i>
                                         Taxa de Conversão
                                     </span>
                                     <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">4,3%</span>
@@ -306,7 +306,7 @@ function handleCategoryPage(categories) {
             font-size: 14px;
             color: #333;
             display: none;
-            width: 65%;
+            width: 75%;
             align-self: center;
             display: flex;
             justify-content: center;
@@ -318,15 +318,89 @@ function handleCategoryPage(categories) {
         
 
             contentDiv.innerHTML = `
-                <div style="width:14%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/8296/8296673.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${totalProducts || '8422'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/87/87112.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${'98%'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/1194/1194711.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Vendas Hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 253.421,29'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/1194/1194711.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 1.774.020,40'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/1194/1194711.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 7.096.081,60'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/520/520647.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Volume de visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'14.983.214'}</span></div>
-                <div style="width:14%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><img src="https://cdn-icons-png.flaticon.com/128/9053/9053198.png" style="width: 20px;"><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'2,9%'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${totalProducts || '8422'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">bar_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${'98%'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas Hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 253.421,29'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 1.774.020,40'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 7.096.081,60'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">pageview</i><br><span style="font-size: 9px; color: gray;">Volume de visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'14.983.214'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'2,9%'}</span></div>
             `;
 
+            const button = document.createElement('button')
+            button.style.cssText = `
+                width:7%;
+                height:100px;
+                padding: 15px;
+                margin-left:10px;
+                border-radius: 10px;
+                background-color: #FFF;
+                border: 1px solid rgb(204, 204, 204);
+                box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
+                color: rgb(51, 51, 51);
+                align-self: center;
+                display: block;
+                text-align: center;
+                overflow-wrap: break-word;
+            `;
+            button.innerHTML = `
+                <i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">edit</i>
+                <br><br>
+                <span style="font-size: 10px;font-weight: 800;">Editar Valores</span>
+            `;
+
+            button.addEventListener('mouseover', () => {
+                button.style.backgroundColor = 'rgb(0,97,114)'; /* Fundo preto ao passar o mouse */
+                button.style.color = 'white'; /* Texto preto */
+            });
+            
+            button.addEventListener('mouseout', () => {
+                button.style.backgroundColor = 'white'; /* Retorna ao fundo transparente */
+                button.style.color = 'black'; /* Retorna ao texto preto */
+            });
+
+            const editContent = document.createElement('div');
+            
+            editContent.style.cssText = `
+                text-align: right;
+                background-color: #d3d3d361;
+                height: 50px;
+                padding: 15px 15px 0px 15px;
+                display: none;
+            `;
+
+            editButton = document.createElement('button');
+            editToogle = document.createElement('input');
+            editText = document.createElement('span');
+
+            editButton.innerText = 'Edite em massa';
+            editButton.disabled = true
+            editText.innerText = 'selecione aqui         ';
+            
+            editToogle.type = 'checkbox';
+
+            editToogle.addEventListener('change', () => {
+                editButton.disabled = !editToogle.checked;
+            })
+
+            editContent.appendChild(editToogle);
+            editContent.appendChild(editText);
+            editContent.appendChild(editButton);
+
+            // Localizar a Div do H1
+            const headerContent = document.querySelector('.OneColumnstyles__ColumnStyles-sc-1w8z7r2-0.dULZUW.rd-col-16');
+            headerContent.appendChild(editContent);
+
+            button.addEventListener('click', () => {
+                if(editContent.style.display === 'none'){
+                    editContent.style.display = 'block'
+                }
+                else {
+                    editContent.style.display = 'none';
+                }
+            })
+
+            contentDiv.appendChild(button);
             // Insere a nova div dentro do container ao lado do h1
             containerDiv.appendChild(contentDiv);
         } else {
