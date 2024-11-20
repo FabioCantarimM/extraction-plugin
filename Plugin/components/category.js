@@ -15,6 +15,17 @@ function handleProductCategoryPage() {
 
             // Criação do Comparador de Preço
             const additionalInfo = document.createElement('div');
+            const checkboxItem = document.createElement('input')
+
+            checkboxItem.type = 'checkbox';
+            checkboxItem.id = productId;
+            checkboxItem.className = "plugin-checkbox"
+            checkboxItem.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 100;
+            `;
 
             // Primeiro Elemento do Gráfico
             const fristLine = document.createElement('div');
@@ -257,6 +268,7 @@ function handleProductCategoryPage() {
             });
 
             // Inserir os novos elementos no item de produto
+            item.appendChild(checkboxItem)
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
             item.appendChild(document.createElement('br'));
@@ -297,24 +309,24 @@ function handleCategoryPage(categories) {
             // Cria a nova div que ficará ao lado do h1
             const contentDiv = document.createElement('div');
             contentDiv.style.cssText = `
-            margin-top: 10px;
-            padding: 15px;
-            border-radius: 10px;
-            background-color: #d3d3d361;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
-            color: #333;
-            display: none;
-            width: 75%;
-            align-self: center;
-            display: flex;
-            justify-content: center;
-        `;
+                margin-top: 10px;
+                padding: 15px;
+                border-radius: 10px;
+                background-color: #d3d3d361;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                font-size: 14px;
+                color: #333;
+                display: none;
+                width: 75%;
+                align-self: center;
+                display: flex;
+                justify-content: center;
+            `;
 
-        categoryPath = categories.join("-");
-        elementProducts = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div > div.CategoryToolbarstyles__CategoryToolbarStyles-sc-103ck0t-0.lkBZUC > div.Found__FoundStyles-sc-62hzma-0.bjMYbQ > p')[0].innerText
-        totalProducts = elementProducts.split(" ")[0]
+            categoryPath = categories.join("-");
+            elementProducts = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div > div.CategoryToolbarstyles__CategoryToolbarStyles-sc-103ck0t-0.lkBZUC > div.Found__FoundStyles-sc-62hzma-0.bjMYbQ > p')[0].innerText
+            totalProducts = elementProducts.split(" ")[0]
         
 
             contentDiv.innerHTML = `
@@ -375,12 +387,32 @@ function handleCategoryPage(categories) {
 
             editButton.innerText = 'Edite em massa';
             editButton.disabled = true
-            editText.innerText = 'selecione aqui         ';
+            editText.innerText = 'selecione aqui';
+            editText.id = 'infoTextPlugin'
+            editText.style.cssText = `
+                padding-left: 15px;
+                padding-right: 35px;
+                width: 20%;
+            `
             
             editToogle.type = 'checkbox';
 
             editToogle.addEventListener('change', () => {
                 editButton.disabled = !editToogle.checked;
+                const checkboxList = document.querySelectorAll(".plugin-checkbox")
+                checkboxList.forEach(item => {
+                    item.checked = editToogle.checked;
+                });
+               const infoTextPlugin = document.querySelector("#infoTextPlugin")
+                if (editToogle.checked) {
+                    infoTextPlugin.innerText = `${checkboxList.length} itens selecionados`
+                } else {
+                    infoTextPlugin.innerText = `Não há itens selecionados`
+                }
+            })
+
+            editButton.addEventListener('click', ()=>{
+                updateInterface()
             })
 
             editContent.appendChild(editToogle);
@@ -407,4 +439,67 @@ function handleCategoryPage(categories) {
             console.log("Elemento h1 não encontrado.");
         }
     }, 5000)
+}
+
+
+function updateInterface() {
+    const updateInterfaceDiv = document.createElement('div');
+    updateInterfaceDiv.style.cssText = `
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    `;
+    updateInterfaceDiv.innerText = 'OI';
+    updateInterfaceDiv.id = "Aqui-Plugin";
+
+    // Cria o botão de fechar
+    const closeButton = document.createElement('button');
+    const icon = document.createElement('i');
+
+    // Adiciona a classe do Material Icons
+    icon.className = 'material-icons';
+
+    // Define o texto do ícone
+    icon.textContent = 'close';
+
+    // Estilos do botão
+    closeButton.style.cssText = `
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    `;
+
+    // Adiciona o ícone ao botão
+    closeButton.appendChild(icon);
+
+    // Adiciona evento de clique para fechar a interface
+    closeButton.addEventListener("click", () => {
+        updateInterfaceDiv.style.display = "none";
+    });
+
+    // Adiciona o botão ao div
+    updateInterfaceDiv.appendChild(closeButton);
+
+    // Verifica se o elemento já existe para evitar duplicações
+    const existingDiv = document.getElementById("Aqui-Plugin");
+    if (!existingDiv) {
+        // Adiciona o elemento ao body
+        document.body.appendChild(updateInterfaceDiv);
+    } else {
+        existingDiv.style.display = "flex";
+    }
 }
