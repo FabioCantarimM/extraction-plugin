@@ -27,32 +27,40 @@ function handleProductCategoryPage() {
                 z-index: 100;
             `;
 
-            // Primeiro Elemento do Gráfico
+            // Elemento do Gráfico Concorrentes
             const fristLine = document.createElement('div');
-            fristLine.style.cssText = `
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 8px;
-                height: 25px;
-                background-color: #a2a2a23b;
-                border-radius: 5px;
-                padding-right: 5px;
-                padding-left: 5px;
-            `;
             const ficon = document.createElement('i');
+            const fdescript = document.createElement('span');
+            const infoKeyText = document.createElement('span');
+            const infoValueText = document.createElement('span');
+            const secondLine = document.createElement('div');
+            const sicon = document.createElement('i');
+            const sdescript = document.createElement('span');
+            const sinfoKeyText = document.createElement('span');
+            const sinfoValueText = document.createElement('span');
+
+            fristLine.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 8px;
+                        height: 25px;
+                        background-color: #a2a2a23b;
+                        border-radius: 5px;
+                        padding-right: 5px;
+                        padding-left: 5px;
+            `;
+                    
             ficon.className = 'material-icons';
-            ficon.textContent = 'trending_up';
             ficon.style.fontSize = '15px';
             ficon.style.fontWeight = '800';
             ficon.style.color = 'white';
-            ficon.style.backgroundColor = 'green';
+            ficon.style.backgroundColor = "gray"
+            ficon.textContent = "block"
 
-            const fdescript = document.createElement('span');
             fdescript.style.marginLeft = "-50%";
             fdescript.innerText = " Panvel";
 
-            const infoKeyText = document.createElement('span');
             infoKeyText.appendChild(ficon);
             infoKeyText.appendChild(fdescript);
             infoKeyText.style.cssText = `
@@ -61,41 +69,41 @@ function handleProductCategoryPage() {
                 color: black;
                 display: contents;
             `;
+            infoValueText.innerText = "-"
 
-            const infoValueText = document.createElement('span');
-            infoValueText.innerText = 'R$ 63,00';
             infoValueText.style.cssText = `
                 font-size: 10px;
                 font-weight: 800;
                 color: black;
             `;
 
-            // Second Line
-            const secondLine = document.createElement('div');
             secondLine.style.cssText = `
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 8px;
-                height: 25px;
-                background-color: #a2a2a23b;
-                border-radius: 5px;
-                padding-right: 5px;
-                padding-left: 5px;
-            `;
-            const sicon = document.createElement('i');
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 8px;
+                        height: 25px;
+                        background-color: #a2a2a23b;
+                        border-radius: 5px;
+                        padding-right: 5px;
+                        padding-left: 5px;
+                    `;
             sicon.className = 'material-icons';
-            sicon.textContent = 'trending_down';
             sicon.style.fontSize = '15px';
             sicon.style.fontWeight = '800';
             sicon.style.color = 'white';
-            sicon.style.backgroundColor = 'red';
+            sicon.style.backgroundColor = "gray"
+            sicon.textContent = "block"
 
-            const sdescript = document.createElement('span');
+            sinfoValueText.style.cssText = `
+                        font-size: 10px;
+                        font-weight: 800;
+                        color: black;
+            `;
             sdescript.style.marginLeft = "-37%";
             sdescript.innerText = " Pague Menos";
+            sinfoValueText.innerText = "-"
 
-            const sinfoKeyText = document.createElement('span');
             sinfoKeyText.appendChild(sicon);
             sinfoKeyText.appendChild(sdescript);
             sinfoKeyText.style.cssText = `
@@ -105,19 +113,41 @@ function handleProductCategoryPage() {
                 display: contents;
             `;
 
-            const sinfoValueText = document.createElement('span');
-            sinfoValueText.innerText = 'R$ 63,00';
-            sinfoValueText.style.cssText = `
-                font-size: 10px;
-                font-weight: 800;
-                color: black;
-            `;  
+            chrome.runtime.sendMessage({ action: 'fetchCompetitorInfo', productId: productId }, (response) => {
+                if (!response) {
+                    messageBox.innerHTML = `Produto não cadastrado`;
+                    
+                    sicon.style.backgroundColor = "gray"
+                    sicon.textContent = "block"
+                } else {
+                    const competitorInfo = response;
+                    const panvel = competitorInfo["PANVEL"] === "Sem Preço" ? competitorInfo["PANVEL"] : parseFloat(competitorInfo["PANVEL"].replace(',', '.'));
+                    const paguemenos = competitorInfo["PAGUEMENOS"] === "Sem Preço" ? competitorInfo["PAGUEMENOS"] : parseFloat(competitorInfo["PAGUEMENOS"].replace(',', '.'));
+
+                    const priceTag = item.querySelector('[data-qa="price_final_item"]').innerText;
+                    const price = parseFloat(priceTag.replace(/R\$|\s/g, '').replace(',', '.'));
+
+                    // Verificando se os preços podem ser comparados
+                    if(panvel != "Sem Preço"){
+                        ficon.style.backgroundColor = panvel > price ? "green" : "red";
+                        ficon.textContent = panvel > price ? 'trending_up' : "trending_down";
+                    }       
+                    
+                    if(paguemenos != "Sem Preço"){
+                        sicon.style.backgroundColor = paguemenos > price ? "green" : "red";
+                        sicon.textContent = paguemenos > price ? 'trending_up' : 'trending_down';
+                    }
+                    
+                    infoValueText.innerText = panvel === "Sem Preço" ? "Sem Preço" : `R$ ${panvel}`;
+                    sinfoValueText.innerText = paguemenos === "Sem Preço" ? "Sem Preço" : `R$ ${paguemenos}`; 
+                }
+
+                setTimeout(console.log(productId), 3000)
+            });
+            
 
             // Criação da caixa de mensagem
             const messageBox = document.createElement('div');
-            // border-radius: 10px;
-            // border: 1px solid #ccc;
-            // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             messageBox.style.cssText = `
                 margin-top: 10px;
                 padding: 15px;
@@ -188,25 +218,6 @@ function handleProductCategoryPage() {
                             messageBox.innerHTML = `Produto não cadastrado`;
                         } else {
                             const productInfo = response;
-
-                            const productSKU = productInfo.sku_monitorado || 'SKU não disponível';
-                            const productWebsite = productInfo.website_monitorado || 'Informação Não Encontrada';
-                            const website = extractDomainFromUrl(productWebsite)
-                            const productData = productInfo.calendario || 'Informação Não Encontrada';
-                            const productHora = productInfo.hora || 'Informação Não Encontrada';
-            
-                            // Convertendo os valores de preço para decimal com duas casas
-                            const precoNormal = productInfo.preco_normal ? parseFloat(productInfo.preco_normal).toFixed(2) : 'Preço Normal não disponível';
-                            const precoOferta = productInfo.preco_oferta ? parseFloat(productInfo.preco_oferta).toFixed(2) : 'Preço Oferta não disponível';
-                            const precoDe = productInfo.preco_de ? parseFloat(productInfo.preco_de).toFixed(2) : 'Preço De não disponível';
-                            const precoUnidadePacote = productInfo.preco_unidade_pacote ? parseFloat(productInfo.preco_unidade_pacote).toFixed(2) : 'Preço por Unidade do Pacote não disponível';
-                            const precoLaboratorio = productInfo.preco_laboratorio ? parseFloat(productInfo.preco_laboratorio).toFixed(2) : 'Preço Laboratório não disponível';
-            
-                            const infPacotes = productInfo.inf_pacotes || 'Informação de Pacotes não disponível';
-                            const validade = productInfo.validade || 'Validade não disponível';
-                            const disponibilidade = productInfo.disponibilidade || 'Disponibilidade não disponível';
-                            const vendidoPor = productInfo.vendido_por || 'Informação de Vendedor não disponível';
-                            const vendidoPorRanking = productInfo.vendido_por_ranking || 'Ranking de Vendas não disponível';
                                 
                             // Adiciona o conteúdo estilizado ao messageBox
                             messageBox.innerHTML = `
