@@ -51,6 +51,29 @@ app.get('/api/produtos/:sku', async (req, res) => {
     }
 });
 
+app.get('/api/concorrente/:sku', async (req, res) =>{
+  const { sku } = req.params;
+  try {
+      console.log('SKU recebido:', sku); // Log do SKU recebido
+      // Notabilidade / APP  - Menor Preço Raia / Nome Competidor Raia / MG Mín / Posicionamento Raia / Banner / Status de Preço Raia / Tratativas Raia /  LB% Novo raia / RBV L1M / RBV L1m Pond / Outlier IC /  IC Atual Raia/Concorrente / IC Novo Site  Loja raia ponderado
+      const result = await pool.query('SELECT "PAGUEMENOS", "DROGARIASPACHECO", "PANVEL", "BELEZANAWEB", "EPOCACOSMETICOS", "FARMACIASNISSEI", "ULTRAFARMA", "EXTRAFARMA", "AMAZON", "DROGARIAVENANCIO", "DROGARIASAOPAULO","MAGAZINELUIZA","ARAUJO" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
+
+      // Verifica se algum produto foi encontrado
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Produto não encontrado' });
+      }
+
+      // Retorna os dados do produto encontrado
+      console.log('Dados do produto:', result.rows[0]); // Log dos dados do produto
+      return res.json(result.rows[0]); // Retorna o primeiro produto encontrado
+  } catch (error) {
+    console.error('Erro ao acessar o banco de dados:', error);
+    res.status(500).send('Erro ao acessar o banco de dados');
+  }
+
+})
+
+
 app.listen(port, () => {
     const ip = getLocalIP()
     console.log(`Servidor rodando em http://${ip}:${port}`);
