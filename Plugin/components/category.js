@@ -112,13 +112,11 @@ function handleProductCategoryPage() {
                 color: black;
                 display: contents;
             `;
-
+            
             chrome.runtime.sendMessage({ action: 'fetchCompetitorInfo', productId: productId }, (response) => {
-                if (!response) {
-                    messageBox.innerHTML = `Produto não cadastrado`;
-                    
-                    sicon.style.backgroundColor = "gray"
-                    sicon.textContent = "block"
+                if (response.error || !response) {
+                    infoValueText.innerText = 'NaN';
+                    sinfoValueText.innerText = 'NaN';
                 } else {
                     const competitorInfo = response;
                     const panvel = competitorInfo["PANVEL"] === "Sem Preço" ? competitorInfo["PANVEL"] : parseFloat(competitorInfo["PANVEL"].replace(',', '.'));
@@ -142,7 +140,7 @@ function handleProductCategoryPage() {
                     sinfoValueText.innerText = paguemenos === "Sem Preço" ? "Sem Preço" : `R$ ${paguemenos}`; 
                 }
 
-                setTimeout(console.log(productId), 3000)
+                setTimeout(() => console.log(productId), 3000);
             });
             
 
