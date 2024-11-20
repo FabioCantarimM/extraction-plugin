@@ -212,50 +212,132 @@ function handleProductCategoryPage() {
                             messageBox.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -65px;">bar_chart</i>
-                                        IC
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Raia/Conc. Pnd.
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">98%</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC ATUAL RAIA/CONCORRENTE POND"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -20px;">attach_money</i>
-                                        Vendas Hoje
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Loja/Site Pnd.
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 217,20</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO SITE/LOJA RAIA PONDERADO"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -25px;">attach_money</i>
-                                        Vendas S-1
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Outlier
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 1.520,40</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["OUTLIER IC"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: -20px;">attach_money</i>
-                                        Vendas mês
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Menor Preço
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">R$ 6.081,60</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["MENOR PREÇO RAIA"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 2px;">pageview</i>
-                                        Volume de Visitas
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">star</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Notabilidade
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">14.983.214</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["NOTABILIDADE"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;margin-right: 7px;">trending_up</i>
-                                        Taxa de Conversão
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">group</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Nome Competidor
+                                        </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">4,3%</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["NOME COMPETIDOR RAIA"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">move_to_inbox</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            MG mínima
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["MG MÍN RAIA"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">radar</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Posicionamento
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["POSICIONAMENTO RAIA"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">image</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Banner
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["BANNER"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">face</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Tratativas
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["TRATATIVAS RAIA"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">report</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            LB
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["LB NOVO RAIA"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">price_change</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            RBV L1M
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["RBV L1M"]}</span>
+                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">price_change</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            RBV L1M Pnd.
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["RBV L1M POND"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             `;
