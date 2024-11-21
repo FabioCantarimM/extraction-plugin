@@ -33,11 +33,6 @@ function handleProductCategoryPage() {
             const fdescript = document.createElement('span');
             const infoKeyText = document.createElement('span');
             const infoValueText = document.createElement('span');
-            const secondLine = document.createElement('div');
-            const sicon = document.createElement('i');
-            const sdescript = document.createElement('span');
-            const sinfoKeyText = document.createElement('span');
-            const sinfoValueText = document.createElement('span');
 
             fristLine.style.cssText = `
                         display: flex;
@@ -59,7 +54,7 @@ function handleProductCategoryPage() {
             ficon.textContent = "block"
 
             fdescript.style.marginLeft = "-50%";
-            fdescript.innerText = " Panvel";
+            fdescript.innerText = " Amazon";
 
             infoKeyText.appendChild(ficon);
             infoKeyText.appendChild(fdescript);
@@ -76,68 +71,24 @@ function handleProductCategoryPage() {
                 font-weight: 800;
                 color: black;
             `;
-
-            secondLine.style.cssText = `
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        margin-bottom: 8px;
-                        height: 25px;
-                        background-color: #a2a2a23b;
-                        border-radius: 5px;
-                        padding-right: 5px;
-                        padding-left: 5px;
-                    `;
-            sicon.className = 'material-icons';
-            sicon.style.fontSize = '15px';
-            sicon.style.fontWeight = '800';
-            sicon.style.color = 'white';
-            sicon.style.backgroundColor = "gray"
-            sicon.textContent = "block"
-
-            sinfoValueText.style.cssText = `
-                        font-size: 10px;
-                        font-weight: 800;
-                        color: black;
-            `;
-            sdescript.style.marginLeft = "-37%";
-            sdescript.innerText = " Pague Menos";
-            sinfoValueText.innerText = "-"
-
-            sinfoKeyText.appendChild(sicon);
-            sinfoKeyText.appendChild(sdescript);
-            sinfoKeyText.style.cssText = `
-                font-size: 10px;
-                font-weight: 800;
-                color: black;
-                display: contents;
-            `;
             
             chrome.runtime.sendMessage({ action: 'fetchCompetitorInfo', productId: productId }, (response) => {
                 if (response.error || !response) {
                     infoValueText.innerText = 'NaN';
-                    sinfoValueText.innerText = 'NaN';
                 } else {
                     const competitorInfo = response;
-                    const panvel = competitorInfo["PANVEL"] === "Sem Preço" ? competitorInfo["PANVEL"] : parseFloat(competitorInfo["PANVEL"].replace(',', '.'));
-                    const paguemenos = competitorInfo["PAGUEMENOS"] === "Sem Preço" ? competitorInfo["PAGUEMENOS"] : parseFloat(competitorInfo["PAGUEMENOS"].replace(',', '.'));
+                    const amazon = competitorInfo["AMAZON"] === "Sem Preço" ? competitorInfo["AMAZON"] : parseFloat(competitorInfo["AMAZON"].replace(',', '.'));
 
                     const priceTag = item.querySelector('[data-qa="price_final_item"]').innerText;
                     const price = parseFloat(priceTag.replace(/R\$|\s/g, '').replace(',', '.'));
 
                     // Verificando se os preços podem ser comparados
-                    if(panvel != "Sem Preço"){
+                    if(amazon != "Sem Preço"){
                         ficon.style.backgroundColor = panvel > price ? "green" : "red";
                         ficon.textContent = panvel > price ? 'trending_up' : "trending_down";
                     }       
                     
-                    if(paguemenos != "Sem Preço"){
-                        sicon.style.backgroundColor = paguemenos > price ? "green" : "red";
-                        sicon.textContent = paguemenos > price ? 'trending_up' : 'trending_down';
-                    }
-                    
-                    infoValueText.innerText = panvel === "Sem Preço" ? "Sem Preço" : `R$ ${panvel}`;
-                    sinfoValueText.innerText = paguemenos === "Sem Preço" ? "Sem Preço" : `R$ ${paguemenos}`; 
+                    infoValueText.innerText = amazon === "Sem Preço" ? "Sem Preço" : `R$ ${amazon}`;
                 }
 
                 setTimeout(() => console.log(productId), 3000);
@@ -223,37 +174,27 @@ function handleProductCategoryPage() {
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
                                         <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
                                         <span style="width: 80%;padding-top: 3px;">
-                                            IC Raia/Conc. Pnd.
+                                            IC Concorrência
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC ATUAL RAIA/CONCORRENTE POND"]}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO RAIA/CONCORRENTE"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
                                         <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
                                         <span style="width: 80%;padding-top: 3px;">
-                                            IC Loja/Site Pnd.
+                                            IC Loja
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO SITE/LOJA RAIA PONDERADO"]}</span>
-                                </div>
-                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
-                                        <span style="width: 80%;padding-top: 3px;">
-                                            IC Outlier
-                                        </span>
-                                    </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["OUTLIER IC"]}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO SITE/LOJA RAIA"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
                                         <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
                                         <span style="width: 80%;padding-top: 3px;">
-                                            Menor Preço
+                                            Preço Loja RD
                                         </span>
                                     </span>
                                     <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["MENOR PREÇO RAIA"]}</span>
@@ -323,17 +264,17 @@ function handleProductCategoryPage() {
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
                                         <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">report</i>
                                         <span style="width: 80%;padding-top: 3px;">
-                                            LB
+                                            LB%
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["LB NOVO RAIA"]}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["LB % NOVO RAIA"]}</span>
                                 </div>
                                 <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                     <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
                                         <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">price_change</i>
                                         <span style="width: 80%;padding-top: 3px;">
-                                            RBV L1M
+                                            RBV 30 dias
                                         </span>
                                     </span>
                                     <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["RBV L1M"]}</span>
@@ -367,10 +308,7 @@ function handleProductCategoryPage() {
             item.appendChild(document.createElement('hr'));
             fristLine.appendChild(infoKeyText);
             fristLine.appendChild(infoValueText);
-            secondLine.appendChild(sinfoKeyText);
-            secondLine.appendChild(sinfoValueText);
             additionalInfo.appendChild(fristLine);
-            additionalInfo.appendChild(secondLine);
             item.appendChild(additionalInfo);
             item.appendChild(messageBox);
             divButton.appendChild(toggleButton)
@@ -414,59 +352,61 @@ function handleCategoryPage(categories) {
                 display: flex;
                 justify-content: center;
             `;
+            
+            
 
             categoryPath = categories.join("-");
             elementProducts = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div > div.CategoryToolbarstyles__CategoryToolbarStyles-sc-103ck0t-0.lkBZUC > div.Found__FoundStyles-sc-62hzma-0.bjMYbQ > p')[0].innerText
             totalProducts = elementProducts.split(" ")[0]
-        
-            chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: productId }, (response) => {
+            
+            const categoryId = document.querySelector('#__next > main > div:nth-child(4) > div > div > div:nth-child(1) > h1').innerHTML
+            const button = document.createElement('button')
+
+            chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: categoryId }, (response) => {
                 const categoryInfo = response;
-                const rbv = categoryInfo.total_rbv_l1m;
+                const rbv = categoryInfo.total_rbv_l1m || 'NaN';
+                const icc = categoryInfo.total_ic_novo_raia_concorrente || 'NaN';
+                const icl = categoryInfo.total_ic_novo_site_loja_raia || 'NaN';
 
                 contentDiv.innerHTML = `
                     <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${totalProducts || '8422'}</span></div>
-                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">bar_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${'98%'}</span></div>
-                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas Hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${'R$ 253.421,29'}</span></div>
-                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${rbv}</span></div>
+                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">bar_chart</i><br><span style="font-size: 9px; color: gray;">IC Concorrente</span><br><br><span style="font-size: 10px;font-weight: 800;">${icc}</span></div>
+                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">IC vs Loja</span><br><br><span style="font-size: 10px;font-weight: 800;">${icl}</span></div>
+                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">RBV 30 dias</span><br><br><span style="font-size: 10px;font-weight: 800;">${rbv}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">pageview</i><br><span style="font-size: 9px; color: gray;">Volume de visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
                 `;
+                
+                contentDiv.innerHTML += `
+                    <div style="width:7%;">
+                        <button 
+                            id="botaoEditar" 
+                            style="height:100px; padding: 15px; margin-left:10px; border-radius: 10px; background-color: #FFF; border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px; color: rgb(51, 51, 51); align-self: center; display: block; text-align: center; overflow-wrap: break-word;" 
+                            onmouseover="this.style.backgroundColor='rgb(0,97,114)'; this.style.color='white';" 
+                            onmouseout="this.style.backgroundColor='white'; this.style.color='black';" 
+                            onclick="const editContent = document.querySelector('#editContent'); if (editContent) { editContent.style.display = editContent.style.display === 'none' ? 'block' : 'none'; } else { console.error('Div com id \\'editContent\\' não encontrada!'); }">
+                            <i class="material-icons" style="font-size: 25px !important; font-weight: 800 !important;">edit</i>
+                            <br><br>
+                            <span style="font-size: 10px;font-weight: 800;">Editar Valores</span>
+                        </button>
+                    </div>
+                `;
             })
 
-            const button = document.createElement('button')
-            button.style.cssText = `
-                width:7%;
-                height:100px;
-                padding: 15px;
-                margin-left:10px;
-                border-radius: 10px;
-                background-color: #FFF;
-                border: 1px solid rgb(204, 204, 204);
-                box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;
-                color: rgb(51, 51, 51);
-                align-self: center;
-                display: block;
-                text-align: center;
-                overflow-wrap: break-word;
-            `;
-            button.innerHTML = `
-                <i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">edit</i>
-                <br><br>
-                <span style="font-size: 10px;font-weight: 800;">Editar Valores</span>
-            `;
+            const buttonScript = document.createElement('script')
+            buttonScript.type = 'text/javascript'
 
-            button.addEventListener('mouseover', () => {
-                button.style.backgroundColor = 'rgb(0,97,114)'; /* Fundo preto ao passar o mouse */
-                button.style.color = 'white'; /* Texto preto */
-            });
-            
-            button.addEventListener('mouseout', () => {
-                button.style.backgroundColor = 'white'; /* Retorna ao fundo transparente */
-                button.style.color = 'black'; /* Retorna ao texto preto */
-            });
+            buttonScript.innerHTML = `function toggleEditContent() {
+                const editContent = document.querySelector('#editContent'); // Certifique-se de que a div com id "editContent" existe
+                if (editContent) {
+                    editContent.style.display = editContent.style.display === 'none' ? 'block' : 'none';
+                } else {
+                    console.error('Div com id "editContent" não encontrada!');
+                }
+            }`
 
             const editContent = document.createElement('div');
-            
+            editContent.id = 'editContent'
             editContent.style.cssText = `
                 text-align: right;
                 background-color: #d3d3d361;
@@ -517,16 +457,7 @@ function handleCategoryPage(categories) {
             const headerContent = document.querySelector('.OneColumnstyles__ColumnStyles-sc-1w8z7r2-0.dULZUW.rd-col-16');
             headerContent.appendChild(editContent);
 
-            button.addEventListener('click', () => {
-                if(editContent.style.display === 'none'){
-                    editContent.style.display = 'block'
-                }
-                else {
-                    editContent.style.display = 'none';
-                }
-            })
-
-            contentDiv.appendChild(button);
+            // contentDiv.appendChild(button);
             // Insere a nova div dentro do container ao lado do h1
             containerDiv.appendChild(contentDiv);
         } else {
@@ -597,3 +528,4 @@ function updateInterface() {
         existingDiv.style.display = "flex";
     }
 }
+

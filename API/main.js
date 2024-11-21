@@ -35,7 +35,7 @@ app.get('/api/produtos/:sku', async (req, res) => {
     try {
         console.log('SKU recebido:', sku); // Log do SKU recebido
         // Notabilidade / APP  - Menor Preço Raia / Nome Competidor Raia / MG Mín / Posicionamento Raia / Banner / Status de Preço Raia / Tratativas Raia /  LB% Novo raia / RBV L1M / RBV L1m Pond / Outlier IC /  IC Atual Raia/Concorrente / IC Novo Site  Loja raia ponderado
-        const result = await pool.query('SELECT "PRODUTO", "NOTABILIDADE", "MENOR PREÇO RAIA", "NOME COMPETIDOR RAIA", "MG MÍN RAIA", "POSICIONAMENTO RAIA", "BANNER", "TRATATIVAS RAIA", "LB NOVO RAIA", "RBV L1M", "RBV L1M POND","OUTLIER IC","IC ATUAL RAIA/CONCORRENTE POND", "IC NOVO SITE/LOJA RAIA PONDERADO" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
+        const result = await pool.query('SELECT "PRODUTO", "NOTABILIDADE", "MENOR PREÇO RAIA", "NOME COMPETIDOR RAIA", "MG MÍN RAIA", "POSICIONAMENTO RAIA", "BANNER", "TRATATIVAS RAIA", "LB % NOVO RAIA", "RBV L1M", "RBV L1M POND","OUTLIER IC","IC NOVO RAIA/CONCORRENTE", "IC NOVO SITE/LOJA RAIA" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
 
         // Verifica se algum produto foi encontrado
         if (result.rows.length === 0) {

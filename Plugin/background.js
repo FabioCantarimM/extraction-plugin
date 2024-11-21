@@ -15,7 +15,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar informações do produto:', error);
                 sendResponse({ error: error.message });
             });
 
@@ -39,7 +38,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar informações do produto:', error);
                 sendResponse({ error: error.message });
             });
 
@@ -63,7 +61,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar informações do produto:', error);
                 sendResponse({ error: error.message });
             });
 
