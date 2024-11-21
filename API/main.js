@@ -76,7 +76,7 @@ app.get('/api/categoria/:cat', async (req, res) =>{
   const { cat } = req.params;
   try {
       console.log('Categoria recebida:', cat); // Log do SKU recebido
-      const result = await pool.query('SELECT total_rbv_l1m, total_ic_novo_raia_concorrente, total_ic_novo_site_loja_raia FROM soma_rbv_categoria WHERE "CATEGORIA" = $1', [cat]);
+      const result = await pool.query('SELECT total_rbv_l1m, total_ic_novo_raia_concorrente, total_ic_novo_site_loja_raia FROM soma_categoria_completa WHERE "CATEGORIA" = $1', [cat]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
