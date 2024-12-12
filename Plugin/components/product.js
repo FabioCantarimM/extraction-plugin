@@ -41,28 +41,37 @@ function headerProductInfo(productId){
         `;
 
         chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
-            response = []
             const categoryInfo = response;
-            const concorrente = categoryInfo.panvel || 'NaN'
+            const priceText = document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText;
+            const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
+
+            const concorrente = parseFloat(categoryInfo.panvel) || 'NaN'
             const lprice = categoryInfo.lprice || 'NaN';
             const ic = categoryInfo.ic || 'NaN';
-            const todayS = +categoryInfo.rbv / 30 || 'NaN';
-            const weekS = +categoryInfo.rbv / 4 || 'NaN';
-            const monthS = +categoryInfo.rbv || 'NaN';
-            const price  = +(document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText);
+            let totalS = parseFloat(categoryInfo.rbv) / priceValue || 'NaN';
+            let todayS = 0;
+            let weekS = 0;
+            if (totalS != 'NaN'){
+                todayS = parseFloat(totalS * priceValue / 30).toFixed(2)
+                weekS = parseFloat(totalS * priceValue / 4).toFixed(2)
+            }
+            const monthS = categoryInfo.rbv ;
 
             let color = 'gray';
+            let thrend = 'graphic_eq';
 
-            if (price > concorrente){
-                color = 'red' 
+            if (priceValue > concorrente){
+                color = 'red'
+                thrend = 'trending_down'
             } 
-            if (price < concorrente){
+            if (priceValue < concorrente){
                 color = 'green'
+                 thrend = 'trending_up'
             }
 
             contentDiv.innerHTML = `
-                <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:${color}">trending_down</i><br><span style="font-size: 9px; color: gray;">Panvel</span><br><br><span style="font-size: 10px;font-weight: 800;">${concorrente}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:red">trending_up</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${lprice}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:${color}">${thrend}</i><br><span style="font-size: 9px; color: gray;">Panvel</span><br><br><span style="font-size: 10px;font-weight: 800;">${concorrente}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:red">trending_down</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${lprice}</span></div>
                 <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:green">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${ic}</span></div>
                 <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${todayS}</span></div>
                 <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas s-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${weekS}</span></div>
