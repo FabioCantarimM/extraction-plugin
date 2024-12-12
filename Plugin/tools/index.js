@@ -22,7 +22,6 @@ function checkUrlAndExecute() {
     } 
     // Se tiver mais de um elemento, passa o vetor de resultados
     else if (pathParts.length > 1) {
-        handleCategoryPage(pathParts);
-        handleProductCategoryPage()
+        handleCategoryPage();
     }
 }

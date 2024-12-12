@@ -1,6 +1,16 @@
 //Dupliquei essa função porque não consigo chamar o search passando parametros, por isso foi necessário refazer a função aqui.
+function handleCategoryPage(){
+    setTimeout(()=>{
+        category = document.querySelector('#__next > main > div:nth-child(4) > div > div > h1');
+
+        if(category){
+            handleHeaderCategoryPage(category)
+            handleProductCategoryPage()
+        }
+    }, 3000)
+}
+
 function handleProductCategoryPage() {
-    setTimeout(() => {
         const searchElements = document.querySelectorAll('#__next > main > div:nth-child(5) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.hcbctD.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div');
         // Cria o elemento <link>
         const link = document.createElement('link');
@@ -481,11 +491,9 @@ function handleProductCategoryPage() {
             divButton.appendChild(toggleButton)
             item.appendChild(divButton);
         });
-    }, 5000);
 }
 
-function handleCategoryPage(categories) {
-    setTimeout(() => {
+function handleHeaderCategoryPage(category) {
         // Seleciona o h1 com o seletor fornecido
         const h1Element = document.querySelector('#__next > main > div:nth-child(4) > div > div.OneColumnstyles__ColumnStyles-sc-1w8z7r2-0.dULZUW.rd-col-16 > h1');
         
@@ -518,24 +526,21 @@ function handleCategoryPage(categories) {
                 align-self: center;
                 display: flex;
                 justify-content: center;
-            `;
-            
-            
+            `;         
 
-            categoryPath = categories.join("-");
             elementProducts = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div > div.CategoryToolbarstyles__CategoryToolbarStyles-sc-103ck0t-0.lkBZUC > div.Found__FoundStyles-sc-62hzma-0.bjMYbQ > p')[0].innerText
             totalProducts = elementProducts.split(" ")[0]
             
-            const categoryId = document.querySelector('#__next > main > div:nth-child(4) > div > div > div:nth-child(1) > h1').innerHTML
             const button = document.createElement('button')
 
-            chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: categoryId }, (response) => {
+            chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: category }, (response) => {
                 const categoryInfo = response;
-                const rbv = categoryInfo.total_rbv_l1m || 'NaN';
-                const icc = categoryInfo.total_ic_novo_raia_concorrente || 'NaN';
-                const icl = categoryInfo.total_ic_novo_site_loja_raia || 'NaN';
+                const rbv = categoryInfo.soma_rbv_l1m || 'NaN';
+                const icc = categoryInfo.media_ic_novo_raia_concorrente || 'NaN';
+                const icl = categoryInfo.media_ic_atual_site_loja_raia || 'NaN';
 
                 contentDiv.innerHTML = `
+                 res ${response}
                     <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${totalProducts || '8422'}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">bar_chart</i><br><span style="font-size: 9px; color: gray;">IC Concorrente</span><br><br><span style="font-size: 10px;font-weight: 800;">${icc}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">IC vs Loja</span><br><br><span style="font-size: 10px;font-weight: 800;">${icl}</span></div>
@@ -630,9 +635,7 @@ function handleCategoryPage(categories) {
         } else {
             console.log("Elemento h1 não encontrado.");
         }
-    }, 5000)
 }
-
 
 function updateInterface() {
     const updateInterfaceDiv = document.createElement('div');
