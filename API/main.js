@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const os = require('os');
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Configuração do pool do PostgreSQL
 const pool = new Pool({
@@ -35,7 +35,7 @@ app.get('/api/produtos/:sku', async (req, res) => {
     try {
         console.log('SKU recebido:', sku); // Log do SKU recebido
         // Notabilidade / APP  - Menor Preço Raia / Nome Competidor Raia / MG Mín / Posicionamento Raia / Banner / Status de Preço Raia / Tratativas Raia /  LB% Novo raia / RBV L1M / RBV L1m Pond / Outlier IC /  IC Atual Raia/Concorrente / IC Novo Site  Loja raia ponderado
-        const result = await pool.query('SELECT "PRODUTO", "NOTABILIDADE", "MENOR PREÇO RAIA", "NOME COMPETIDOR RAIA", "MG MÍN RAIA", "POSICIONAMENTO RAIA", "BANNER", "TRATATIVAS RAIA", "LB % NOVO RAIA", "RBV L1M", "RBV L1M POND","OUTLIER IC","IC NOVO RAIA/CONCORRENTE", "IC NOVO SITE/LOJA RAIA" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
+        const result = await pool.query('SELECT "PREÇO MARGEM MINIMA RAIA" as lprice, "IC NOVO SITE/LOJA RAIA" as ic, "RBV L1M" as rbv,"panvel" FROM "data_updated" WHERE "produto" = $1', [sku]);
 
         // Verifica se algum produto foi encontrado
         if (result.rows.length === 0) {
@@ -55,7 +55,7 @@ app.get('/api/concorrente/:sku', async (req, res) =>{
   const { sku } = req.params;
   try {
       console.log('SKU recebido:', sku); // Log do SKU recebido
-      const result = await pool.query('SELECT "PAGUEMENOS", "DROGARIASPACHECO", "PANVEL", "BELEZANAWEB", "EPOCACOSMETICOS", "FARMACIASNISSEI", "ULTRAFARMA", "EXTRAFARMA", "AMAZON", "DROGARIAVENANCIO", "DROGARIASAOPAULO","MAGAZINELUIZA","ARAUJO" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
+      const result = await pool.query('SELECT "paguemenos", "drogariaspacheco","panvel","belezanaweb","epocacosmeticos","farmaciasnissei","ultrafarma","extrafarma","amazon","drogariavenancio","drogariasaopaulo","magazineluiza","araujo" FROM drogadata WHERE "PRODUTO" = $1', [sku]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
@@ -97,3 +97,6 @@ app.listen(port, () => {
     const ip = getLocalIP()
     console.log(`Servidor rodando em http://${ip}:${port}`);
 });
+
+
+

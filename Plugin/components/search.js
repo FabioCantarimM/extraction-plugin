@@ -1,6 +1,6 @@
 function handleSearchPage() {
     setTimeout(() => {
-        const searchElements = document.querySelectorAll('#__next > main > div:nth-child(4) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-1lryd20-1.hEcJif.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div');
+        const searchElements = document.querySelectorAll('#__next > main > main > div > div > section > section > div.sc-8f6b8a4-12.bDnVMX > div.sc-8f6b8a4-8.eASWkJ > article');
     
         searchElements.forEach((item) => {
             const productId = item.getAttribute('data-item-id');
@@ -60,90 +60,150 @@ function handleSearchPage() {
             toggleButton.addEventListener('click', () => {
                 if (messageBox.style.display === 'none') {
                     messageBox.style.display = 'block';
-                    toggleButton.innerText = '-';
+                    toggleButton.innerText = "";
+
+                    const icon = document.createElement('i');
+
+                    // Adiciona a classe do Material Icons
+                    icon.className = 'material-icons';
+
+                    // Define o texto do ícone
+                    icon.textContent = 'close';
+
+                    // Adiciona estilos diretamente
+                    icon.style.fontSize = '15px';
+                    icon.style.fontWeight = '800';
+
+                    toggleButton.appendChild(icon);
 
                     chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
                         if (response.error) {
                             messageBox.innerHTML = `Produto não cadastrado`;
                         } else {
                             const productInfo = response;
-
-                            const productSKU = productInfo.sku_monitorado || 'SKU não disponível';
-                            const productWebsite = productInfo.website_monitorado || 'Informação Não Encontrada';
-                            const website = extractDomainFromUrl(productWebsite)
-                            const productData = productInfo.calendario || 'Informação Não Encontrada';
-                            const productHora = productInfo.hora || 'Informação Não Encontrada';
-            
-                            // Convertendo os valores de preço para decimal com duas casas
-                            const precoNormal = productInfo.preco_normal ? parseFloat(productInfo.preco_normal).toFixed(2) : 'Preço Normal não disponível';
-                            const precoOferta = productInfo.preco_oferta ? parseFloat(productInfo.preco_oferta).toFixed(2) : 'Preço Oferta não disponível';
-                            const precoDe = productInfo.preco_de ? parseFloat(productInfo.preco_de).toFixed(2) : 'Preço De não disponível';
-                            const precoUnidadePacote = productInfo.preco_unidade_pacote ? parseFloat(productInfo.preco_unidade_pacote).toFixed(2) : 'Preço por Unidade do Pacote não disponível';
-                            const precoLaboratorio = productInfo.preco_laboratorio ? parseFloat(productInfo.preco_laboratorio).toFixed(2) : 'Preço Laboratório não disponível';
-            
-                            const infPacotes = productInfo.inf_pacotes || 'Informação de Pacotes não disponível';
-                            const validade = productInfo.validade || 'Validade não disponível';
-                            const disponibilidade = productInfo.disponibilidade || 'Disponibilidade não disponível';
-                            const vendidoPor = productInfo.vendido_por || 'Informação de Vendedor não disponível';
-                            const vendidoPorRanking = productInfo.vendido_por_ranking || 'Ranking de Vendas não disponível';
                                 
                             // Adiciona o conteúdo estilizado ao messageBox
                             messageBox.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">SKU</span><span style="text-align:end;width: 50%;font-size: 12px; font-weight: 800;">${productSKU}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Concorrência
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO RAIA/CONCORRENTE"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Website</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800; overflow-wrap: break-word;"><a href='${productWebsite}' target="_blank" style="color: red;">${website}</a></span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">bar_chart</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Loja
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["IC NOVO SITE/LOJA RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Data Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productData}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Preço Loja RD
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["MENOR PREÇO RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Hora Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productHora}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">star</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Notabilidade
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["NOTABILIDADE"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preço Normal</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoNormal}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">group</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Nome Competidor
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["NOME COMPETIDOR RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preço Oferta</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoOferta}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">move_to_inbox</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            MG mínima
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["MG MÍN RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco de</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoDe}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">radar</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Posicionamento
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["POSICIONAMENTO RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco Unid. Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoUnidadePacote}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">image</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Banner
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["BANNER"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Preco Laboratório</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoLaboratorio}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">face</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Tratativas
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["TRATATIVAS RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Informações do Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${infPacotes}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">report</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            LB%
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["LB % NOVO RAIA"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Validade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${validade}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">price_change</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            RBV 30 dias
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["RBV L1M"]}</span>
                                 </div>
-                                <hr />
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Disponibilidade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${disponibilidade}</span>
+                                    <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">price_change</i>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            RBV L1M Pnd.
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo["RBV L1M POND"]}</span>
                                 </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Vendido Por</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPor}</span>
-                                </div>
-                                <hr />
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span style="color: gray; font-size: 12px; width: 40%;">Vendido por Ranking</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPorRanking}</span>
-                                </div>
+                                <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             `;
                         }
                     });
@@ -154,14 +214,10 @@ function handleSearchPage() {
             });
 
             // Inserir os novos elementos no item de produto
-            item.appendChild(document.createElement('br'));
-            item.appendChild(document.createElement('br'));
-            item.appendChild(document.createElement('br'));
-            item.appendChild(document.createElement('br'));
             item.appendChild(messageBox);
             item.appendChild(document.createElement('br'));
             divButton.appendChild(toggleButton)
             item.appendChild(divButton);
         });
-    }, 5000);
+    }, 10000);
 }

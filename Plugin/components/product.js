@@ -1,128 +1,80 @@
 function handleProductPage() {
-    // XPath do elemento que você deseja capturar
-    const xpath = '//*[@id="__next"]/main/div[8]/div/div/div[1]/span[2]/div';
+    insertGoogleMaterial()
 
-    // Procura o elemento pelo XPath
-    const element = getElementByXPath(xpath);
-
-    const messageBox = document.createElement('div');
-    messageBox.style.cssText = `
-                        margin-top: 10px;
-                        padding: 15px;
-                        border-radius: 10px;
-                        background-color: #fff;
-                        border: 1px solid #ccc;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                        font-size: 14px;
-                        color: #333;
-                        display: none;
-                        width: 95%;
-                        align-self: center;
-                        display: block
-                    `;
-
-
-    if (element) {
-        const contentText = element.textContent.trim();
-        console.log('Conteúdo encontrado:', contentText);
-
-        chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: contentText }, (response) => {
-            if (response.error) {
-                messageBox.innerHTML = 'Produto não cadastrado'
-                messageBox.cssText = `
-                    text-align:end;
-                    width: 50%;
-                    font-size: 12px;
-                    font-weight: 800;
-                    overflow-wrap: break-word;
-                    collor: red;
-                `;
-            } else {
-                const productInfo = response;
-
-                const productSKU = productInfo.sku_monitorado || 'SKU não disponível';
-                const productWebsite = productInfo.website_monitorado || 'Informação Não Encontrada';
-                const website = extractDomainFromUrl(productWebsite)
-                const productData = productInfo.calendario || 'Informação Não Encontrada';
-                const productHora = productInfo.hora || 'Informação Não Encontrada';
-
-                // Convertendo os valores de preço para decimal com duas casas
-                const precoNormal = productInfo.preco_normal ? parseFloat(productInfo.preco_normal).toFixed(2) : 'Preço Normal não disponível';
-                const precoOferta = productInfo.preco_oferta ? parseFloat(productInfo.preco_oferta).toFixed(2) : 'Preço Oferta não disponível';
-                const precoDe = productInfo.preco_de ? parseFloat(productInfo.preco_de).toFixed(2) : 'Preço De não disponível';
-                const precoUnidadePacote = productInfo.preco_unidade_pacote ? parseFloat(productInfo.preco_unidade_pacote).toFixed(2) : 'Preço por Unidade do Pacote não disponível';
-                const precoLaboratorio = productInfo.preco_laboratorio ? parseFloat(productInfo.preco_laboratorio).toFixed(2) : 'Preço Laboratório não disponível';
-
-                const infPacotes = productInfo.inf_pacotes || 'Informação de Pacotes não disponível';
-                const validade = productInfo.validade || 'Validade não disponível';
-                const disponibilidade = productInfo.disponibilidade || 'Disponibilidade não disponível';
-                const vendidoPor = productInfo.vendido_por || 'Informação de Vendedor não disponível';
-                const vendidoPorRanking = productInfo.vendido_por_ranking || 'Ranking de Vendas não disponível';
-                    
-                // Adiciona o conteúdo estilizado ao messageBox
-                messageBox.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">SKU</span><span style="text-align:end;width: 50%;font-size: 12px; font-weight: 800;">${productSKU}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Website</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800; overflow-wrap: break-word;"><a href='${productWebsite}' target="_blank" style="color: red;">${website}</a></span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Data Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productData}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Hora Monitoramento</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${productHora}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Preço Normal</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoNormal}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Preço Oferta</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoOferta}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Preco de</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoDe}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Preco Unid. Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoUnidadePacote}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Preco Laboratório</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${precoLaboratorio}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Informações do Pacote</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${infPacotes}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Validade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${validade}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Disponibilidade</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${disponibilidade}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Vendido Por</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPor}</span>
-                    </div>
-                    <hr />
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: gray; font-size: 12px; width: 40%;">Vendido por Ranking</span><span style="text-align:end; width: 50%;font-size: 12px; font-weight: 800;">${vendidoPorRanking}</span>
-                    </div>
-                `;
-            }
-        });
-        const productInfoSection = getElementByXPath('//*[@id="__next"]/main/div[2]');
-        productInfoSection.appendChild(messageBox);
+    const productId = document.querySelector('#__next > main > div.RaiaProductDescriptionstyles__Global-sc-1ijezxr-0.jsOYDY.rd-container > div > div > div:nth-child(1) > span.RaiaProductDescriptionstyles__Data-sc-1ijezxr-8.fTuOFQ > div').innerText
         
+    headerProductInfo(productId)
+        
+}
+
+function insertGoogleMaterial(){
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+    // Adiciona o link ao <head> do documento
+    document.head.appendChild(link);
+}
+
+
+function headerProductInfo(productId){
+    const headerProduct = document.querySelector('#__next > main > div:nth-child(2)')
+
+    if (headerProduct) {   
+        // Cria a nova div que ficará ao lado do h1
+        const contentDiv = document.createElement('div');
+        contentDiv.style.cssText = `
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 3px;
+            background-color: #d3d3d361;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+            display: none;
+            width: 100%;
+            align-self: center;
+            display: flex;
+            justify-content: center;
+        `;
+
+        chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
+            response = []
+            const categoryInfo = response;
+            const concorrente = categoryInfo.panvel || 'NaN'
+            const lprice = categoryInfo.lprice || 'NaN';
+            const ic = categoryInfo.ic || 'NaN';
+            const todayS = +categoryInfo.rbv / 30 || 'NaN';
+            const weekS = +categoryInfo.rbv / 4 || 'NaN';
+            const monthS = +categoryInfo.rbv || 'NaN';
+            const price  = +(document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText);
+
+            let color = 'gray';
+
+            if (price > concorrente){
+                color = 'red' 
+            } 
+            if (price < concorrente){
+                color = 'green'
+            }
+
+            contentDiv.innerHTML = `
+                <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:${color}">trending_down</i><br><span style="font-size: 9px; color: gray;">Panvel</span><br><br><span style="font-size: 10px;font-weight: 800;">${concorrente}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:red">trending_up</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${lprice}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color:green">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${ic}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${todayS}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas s-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${weekS}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${monthS}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">groups_2</i><br><span style="font-size: 9px; color: gray;">Volume de Visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
+            `;
+        })
+
+        headerProduct.appendChild(contentDiv);
+        headerProduct.appendChild(document.createElement('br'));
+        headerProduct.appendChild(document.createElement('br'));
     } else {
-        console.log('Elemento não encontrado pelo XPath fornecido.');
+        console.log("Elemento h1 não encontrado.");
     }
 }
