@@ -1,10 +1,11 @@
 function handleProductPage() {
-    insertGoogleMaterial()
+    setTimeout(() => {
+        insertGoogleMaterial()
 
-    const productId = document.querySelector('#__next > main > div.RaiaProductDescriptionstyles__Global-sc-1ijezxr-0.jsOYDY.rd-container > div > div > div:nth-child(1) > span.RaiaProductDescriptionstyles__Data-sc-1ijezxr-8.fTuOFQ > div').innerText
-        
-    headerProductInfo(productId)
-        
+        const productId = document.querySelector('#__next > main > div.RaiaProductDescriptionstyles__Global-sc-1ijezxr-0.jsOYDY.rd-container > div > div > div:nth-child(1) > span.RaiaProductDescriptionstyles__Data-sc-1ijezxr-8.fTuOFQ > div').innerText
+            
+        headerProductInfo(productId)
+    }, 5000)
 }
 
 function insertGoogleMaterial(){
