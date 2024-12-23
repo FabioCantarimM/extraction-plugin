@@ -160,10 +160,13 @@ function handleSearchProducts(){
                         let todayS = 0;
                         let weekS = 0;
                         if (totalS != 'NaN'){
-                            todayS = parseFloat(totalS * priceValue / 30).toFixed(2)
-                            weekS = parseFloat(totalS * priceValue / 4).toFixed(2)
+                            const datatd = totalS * priceValue / 30
+                            todayS = formatCurrency(datatd)
+                            const dataw = datatd * priceValue / 4
+                            weekS = formatCurrency(datatd)
                         }
-                        const monthS = productInfo.rbv ;
+                        const datam = productInfo.rbv.replace('R$', '').trim().replace(',', '.')
+                        const monthS = formatCurrency(datam)
 
                         let color = 'gray';
                         let thrend = 'graphic_eq';
@@ -250,11 +253,15 @@ function handleSearchProducts(){
         });
 
         // Inserir os novos elementos no item de produto
+        price = item.querySelector('.sc-aac12c5e-3.fwPkfT')
         item.appendChild(checkboxItem);
-        item.appendChild(messageBox);
-        item.appendChild(document.createElement('br'));
+        price.parentNode.insertBefore(messageBox, price);
+        // item.appendChild(messageBox);
+        price.parentNode.insertBefore(document.createElement('br'), price);
+        // item.appendChild(document.createElement('br'));
         divButton.appendChild(toggleButton)
-        item.appendChild(divButton);
+        price.parentNode.insertBefore(divButton, price);
+        // item.appendChild(divButton);
     });
 }
 
@@ -262,12 +269,12 @@ async function handleSearchProductsCompetidor() {
     const searchElements = document.querySelectorAll('.sc-aac12c5e-2.iBGjMy');
 
     for (let item of searchElements) {
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
         const additionalInfo = document.createElement('div');
+        additionalInfo.style.cssText = `
+           padding: 0px 15px 15px;
+            width: 95%;
+        `;
+
         const productId = item.getAttribute('data-item-id');
         
         // Elemento do Gráfico Concorrentes
@@ -406,28 +413,35 @@ async function handleSearchProductsCompetidor() {
             const max = filteredValues.reduce((prev, current) => (prev.value > current.value ? prev : current), {});
             const min = filteredValues.reduce((prev, current) => (prev.value < current.value ? prev : current), {});
 
-            const priceTag = (item.querySelector('[data-qa="price_final_item"]') || 
+            let priceTag = (item.querySelector('[data-qa="price_final_item"]') || 
                   item.querySelector('div.special-price') || 
-                  item.querySelector('.price-lmpm')).innerText;
+                  item.querySelector('.price-lmpm'))
+                  
+            if (priceTag != null) {
+                priceTag = priceTag.innerText
+            } else {
+                priceTag = "0,0"
+            }
+    
 
             const price = parseFloat(priceTag.replace(/R\$|\s/g, '').replace(',', '.'));
 
             // Verificando se os preços podem ser comparados
             if (!isNaN(max.value)) {
                 ficon.style.backgroundColor = max.value > price ? "green" : "red";
-                ficon.textContent = max.value > price ? 'trending_up' : "trending_down";
+                ficon.textContent = 'trending_up';
                 fdescript.innerText = `${max.name}`
-                infoValueText.innerText = `R$ ${max.value.toFixed(2)}`;
+                infoValueText.innerText = `${formatCurrency(max.value)}`;
                 fristLine.appendChild(infoKeyText);
                 fristLine.appendChild(infoValueText);
                 additionalInfo.appendChild(fristLine);
             }
 
             if (!isNaN(min.value)) {
-                sicon.style.backgroundColor = min.value > price ? "red" : "green";
-                sicon.textContent = min.value > price ? 'trending_down' : "trending_up";
-                sdescript.innerText = `${min.name}`
-                sinfoValueText.innerText = `${min.value.toFixed(2)}`;
+                sicon.style.backgroundColor = min.value > price ? "green" : "red";
+                sicon.textContent = 'trending_down';
+                sdescript.innerText = `${min.name}`;
+                sinfoValueText.innerText =  `${formatCurrency(min.value)}`;
                 secondLine.appendChild(sinfoKeyText);
                 secondLine.appendChild(sinfoValueText);
                 additionalInfo.appendChild(secondLine);
@@ -438,8 +452,12 @@ async function handleSearchProductsCompetidor() {
             infoValueText.innerText = 'NaN';
         }
 
-        item.appendChild(additionalInfo);
-        item.appendChild(document.createElement('hr'))
+        price = item.querySelector('.sc-aac12c5e-3.fwPkfT')
+        price.parentNode.insertBefore(additionalInfo, price);
+        price.parentNode.insertBefore(document.createElement('hr'), price);
+
+        // item.appendChild(additionalInfo);
+        // item.appendChild(document.createElement('hr'))
     }
 }
 
@@ -450,13 +468,19 @@ async function handleHeaderSearchPage(category) {
     if (h1Element) {
         // Cria o container para o h1 e a nova div ficarem lado a lado
         const containerDiv = document.createElement('div');
+        containerDiv.id = 'mainContainer'
         containerDiv.style.cssText = `
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding-bottom: 30px;
+            background-color: #d3d3d361;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 5px;
         `;
-        
+        const brElement = document.createElement('br'); // Cria um elemento <br>
+        // containerDiv.parentNode.appendChild(brElement); // Adiciona o <br> após containerDiv
+
         // Movendo o h1 para dentro do novo container
         h1Element.parentNode.insertBefore(containerDiv, h1Element);
         containerDiv.appendChild(h1Element);
@@ -467,10 +491,6 @@ async function handleHeaderSearchPage(category) {
         contentDiv.style.cssText = `
             margin-top: 10px;
             padding: 15px;
-            border-radius: 3px;
-            background-color: #d3d3d361;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             font-size: 14px;
             color: #333;
             display: none;
@@ -526,13 +546,12 @@ async function handleHeaderSearchPage(category) {
             i++;
         }
 
-            agg_ic = agg_ic / i;
             contentDiv.innerHTML = `
                 <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${i || '8422'}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${parseFloat(agg_ic).toFixed(2)}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${parseFloat(agg_todayS).toFixed(2)}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${parseFloat(agg_weekS).toFixed(2)}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${parseFloat(agg_monthS).toFixed(2)}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_ic)}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_todayS)}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_weekS)}</span></div>
+                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_monthS)}</span></div>
                 <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">groups_2</i><br><span style="font-size: 9px; color: gray;">Volume de visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
                 <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
             `;

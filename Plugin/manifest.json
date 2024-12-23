@@ -28,6 +28,7 @@
           "tools/url.js",
           "tools/tags.js",
           "tools/index.js",
+          "tools/format.js",
           "components/search.js",
           "components/product.js", 
           "components/category.js",

@@ -46,16 +46,28 @@ function headerProductInfo(productId){
             const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
 
             const concorrente = parseFloat(categoryInfo.panvel) || 'NaN'
-            const lprice = categoryInfo.lprice || 'NaN';
+            const lprice = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(parseFloat(categoryInfo.lprice.replace('R$', '').trim().replace(',', '.'))) || 'NaN';
             const ic = categoryInfo.ic || 'NaN';
             let totalS = parseFloat(categoryInfo.rbv) / priceValue || 'NaN';
             let todayS = 0;
             let weekS = 0;
             if (totalS != 'NaN'){
-                todayS = parseFloat(totalS * priceValue / 30).toFixed(2)
-                weekS = parseFloat(totalS * priceValue / 4).toFixed(2)
+                todayS = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(parseFloat(totalS * priceValue / 30).toFixed(2));
+                weekS = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(parseFloat(totalS * priceValue / 4).toFixed(2));
             }
-            const monthS = categoryInfo.rbv ;
+            const monthS = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(parseFloat(categoryInfo.rbv.replace('R$', '').trim().replace(',', '.')))
 
             let color = 'gray';
             let thrend = 'trending_up';

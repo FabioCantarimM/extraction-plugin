@@ -25,14 +25,16 @@ function insertGoogleMaterial(){
 }
 
 function expandButton() {
-    const areaEx = document.querySelector('[data-testid="category-description"]');
+    const areaEx = document.querySelector('.OneColumnstyles__ColumnStyles-sc-1w8z7r2-0.dULZUW.rd-col-16');
+    const innerAreaEx = document.createElement('div')
+    
     const existExButton = document.querySelector('#exButton');
 
     if (!existExButton) {
         const exButton = document.createElement('div');
         exButton.style.textAlign = "right";
         exButton.innerHTML = '<button id="exButton" style="background-color: rgb(255, 255, 255); color: rgb(241, 166, 88); padding: 5px 15px; font-size: 12px; text-transform: uppercase; border: 1px solid rgb(241, 166, 88); border-radius: 5px; display: inline-block;">Expandir tudo</button>';
-        areaEx.appendChild(exButton);
+        innerAreaEx.appendChild(exButton);
 
         // Adicionando eventos de mouseover e mouseout diretamente
         const button = exButton.querySelector('#exButton');
@@ -54,6 +56,7 @@ function expandButton() {
                 }
             });
         });
+        areaEx.append(innerAreaEx)
     }
 }
 
@@ -161,10 +164,19 @@ function handleCategoryProducts(){
                         let todayS = 0;
                         let weekS = 0;
                         if (totalS != 'NaN'){
-                            todayS = parseFloat(totalS * priceValue / 30).toFixed(2)
-                            weekS = parseFloat(totalS * priceValue / 4).toFixed(2)
+                            todayS = new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              }).format(parseFloat(totalS * priceValue / 30).toFixed(2));
+                            weekS = new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              }).format(parseFloat(totalS * priceValue / 4).toFixed(2));
                         }
-                        const monthS = productInfo.rbv ;
+                        const monthS = new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(parseFloat(productInfo.rbv.replace('R$', '').trim().replace(',', '.')));
 
                         let color = 'gray';
                         let thrend = 'graphic_eq';
@@ -251,11 +263,13 @@ function handleCategoryProducts(){
         });
 
         // Inserir os novos elementos no item de produto
+        price = item.querySelector('.ProductCardstyles__CardFooter-iu9am6-2.jPqIVV')
+        
         item.appendChild(checkboxItem);
-        item.appendChild(messageBox);
-        item.appendChild(document.createElement('br'));
+        price.parentNode.insertBefore(messageBox, price);
+        price.parentNode.insertBefore(document.createElement('br'), price);
         divButton.appendChild(toggleButton)
-        item.appendChild(divButton);
+        price.parentNode.insertBefore(divButton, price);
     });
 }
 
@@ -263,11 +277,6 @@ async function handleCategoryProductsCompetidor() {
     const searchElements = document.querySelectorAll('#__next > main > div:nth-child(5) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.hcbctD.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div');
 
     for (let item of searchElements) {
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
-        item.appendChild(document.createElement('br'));
         const additionalInfo = document.createElement('div');
         const productId = item.getAttribute('data-item-id');
         
@@ -416,19 +425,25 @@ async function handleCategoryProductsCompetidor() {
             // Verificando se os preços podem ser comparados
             if (!isNaN(max.value)) {
                 ficon.style.backgroundColor = max.value > price ? "green" : "red";
-                ficon.textContent = max.value > price ? 'trending_up' : "trending_down";
+                ficon.textContent = 'trending_up';
                 fdescript.innerText = `${max.name}`
-                infoValueText.innerText = `R$ ${max.value.toFixed(2)}`;
+                infoValueText.innerText = `${new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              }).format(parseFloat(max.value).toFixed(2))}`;
                 fristLine.appendChild(infoKeyText);
                 fristLine.appendChild(infoValueText);
                 additionalInfo.appendChild(fristLine);
             }
 
             if (!isNaN(min.value)) {
-                sicon.style.backgroundColor = min.value > price ? "red" : "green";
-                sicon.textContent = min.value > price ? 'trending_down' : "trending_up";
-                sdescript.innerText = `${min.name}`
-                sinfoValueText.innerText = `${min.value.toFixed(2)}`;
+                sicon.style.backgroundColor = min.value > price ? "green" : "red";
+                sicon.textContent = 'trending_down';
+                sdescript.innerText = `${min.name}`;
+                sinfoValueText.innerText =  `${new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(parseFloat(min.value).toFixed(2))}`;
                 secondLine.appendChild(sinfoKeyText);
                 secondLine.appendChild(sinfoValueText);
                 additionalInfo.appendChild(secondLine);
@@ -439,7 +454,9 @@ async function handleCategoryProductsCompetidor() {
             infoValueText.innerText = 'NaN';
         }
 
-        item.appendChild(additionalInfo);
+        price = item.querySelector('.ProductCardstyles__CardFooter-iu9am6-2.jPqIVV')
+        price.parentNode.insertBefore(additionalInfo, price);
+        // item.appendChild(additionalInfo);
     }
 }
 
@@ -454,6 +471,8 @@ function handleHeaderCategoryPage(category) {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                background-color: #d3d3d361;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             `;
             
             // Movendo o h1 para dentro do novo container
@@ -465,10 +484,7 @@ function handleHeaderCategoryPage(category) {
             contentDiv.style.cssText = `
                 margin-top: 10px;
                 padding: 15px;
-                border-radius: 3px;
-                background-color: #d3d3d361;
-                border: 1px solid #ccc;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                
                 font-size: 14px;
                 color: #333;
                 display: none;
@@ -486,8 +502,18 @@ function handleHeaderCategoryPage(category) {
             chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: category }, (response) => {
                 const categoryInfo = response;
                 const rbv = parseFloat(categoryInfo.soma_rbv_l1m).toFixed(2) || 'NaN';
-                const daily = parseFloat(rbv / 30).toFixed(2);
-                const weekly = parseFloat(rbv / 4).toFixed(2);
+                const daily = new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              }).format(parseFloat(rbv / 30).toFixed(2));
+                const weekly = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(parseFloat(rbv / 4).toFixed(2));
+                const monthly = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(parseFloat(rbv).toFixed(2));
                 const icl = parseFloat(categoryInfo.media_ic_atual_site_loja_raia).toFixed(2) || 'NaN';
 
                 contentDiv.innerHTML = `
@@ -495,7 +521,7 @@ function handleHeaderCategoryPage(category) {
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${icl}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${daily}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${weekly}</span></div>
-                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${rbv}</span></div>
+                    <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${monthly}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">groups_2</i><br><span style="font-size: 9px; color: gray;">Volume de visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
                 `;
