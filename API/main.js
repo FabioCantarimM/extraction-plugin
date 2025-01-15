@@ -76,7 +76,7 @@ app.get('/api/categoria/:cat', async (req, res) =>{
   const { cat } = req.params;
   try {
       console.log('Categoria recebida:', cat); // Log do SKU recebido
-      const result = await pool.query('SELECT media_ic_atual_raia as "media_ic_atual_site_loja_raia", soma_rbv_l1m, media_ic_novo_concorrente, numero_produtos FROM resumo_categoria_site WHERE "categoria_site" = $1', [cat]);
+      const result = await pool.query('SELECT media_ic_atual_raia as "media_ic_atual_site_loja_raia", soma_rbv_l1m, "media_ic_novo_raia_concorrente" as "media_ic_novo_concorrente", numero_produtos FROM resumo_categoria_site WHERE "categoria_site" = $1', [cat]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
