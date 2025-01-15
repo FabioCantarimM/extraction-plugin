@@ -35,7 +35,7 @@ app.get('/api/produtos/:sku', async (req, res) => {
     try {
         console.log('SKU recebido:', sku); // Log do SKU recebido
         // Notabilidade / APP  - Menor Preço Raia / Nome Competidor Raia / MG Mín / Posicionamento Raia / Banner / Status de Preço Raia / Tratativas Raia /  LB% Novo raia / RBV L1M / RBV L1m Pond / Outlier IC /  IC Atual Raia/Concorrente / IC Novo Site  Loja raia ponderado
-        const result = await pool.query('SELECT "PREÇO MARGEM MINIMA RAIA" as lprice, "IC NOVO SITE/LOJA RAIA" as ic, "RBV L1M" as rbv,"PANVEL" FROM "produtos" WHERE "produto" = $1', [sku]);
+        const result = await pool.query('SELECT "PREÇO MARGEM MINIMA RAIA" as lprice, "IC NOVO SITE/LOJA RAIA" as ic, "RBV L1M" as rbv,"PANVEL" AS "panvel" FROM "produtos" WHERE "produto" = $1', [sku]);
 
         // Verifica se algum produto foi encontrado
         if (result.rows.length === 0) {
@@ -55,7 +55,7 @@ app.get('/api/concorrente/:sku', async (req, res) =>{
   const { sku } = req.params;
   try {
       // console.log('SKU recebido:', sku); // Log do SKU recebido
-      const result = await pool.query('SELECT "PAGUEMENOS", "DROGARIASPACHECO", "PANVEL", "BELEZANAWEB", "EPOCACOSMETICOS", "FARMACIASNISSEI", "ULTRAFARMA", "EXTRAFARMA", "AMAZON", "DROGARIAVENANCIO", "DROGARIASAOPAULO", "MAGAZINELUIZA", "ARAUJO" FROM "produtos" WHERE PRODUTO = $1', [sku]);
+      const result = await pool.query('SELECT "PAGUEMENOS" as "paguemenos", "DROGARIASPACHECO" as "drogariaspacheco", "PANVEL" as "panvel", "BELEZANAWEB" as "belezanaweb", "EPOCACOSMETICOS" as "epocacosmeticos", "FARMACIASNISSEI" as "farmaciasnissei", "ULTRAFARMA" as "ultrafarma", "EXTRAFARMA" as "extrafarma", "AMAZON" as "amazon", "DROGARIAVENANCIO" as "drogariavenancio", "DROGARIASAOPAULO" as "drogariasaopaulo", "MAGAZINELUIZA" as "magazineluiza", "ARAUJO" as "araujo" FROM "produtos" WHERE PRODUTO = $1', [sku]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
@@ -76,7 +76,7 @@ app.get('/api/categoria/:cat', async (req, res) =>{
   const { cat } = req.params;
   try {
       console.log('Categoria recebida:', cat); // Log do SKU recebido
-      const result = await pool.query('SELECT media_ic_atual_raia, soma_rbv_l1m, media_ic_novo_concorrente, numero_produtos FROM resumo_categoria_site WHERE "categoria_site" = $1', [cat]);
+      const result = await pool.query('SELECT media_ic_atual_raia as "media_ic_atual_site_loja_raia", soma_rbv_l1m, media_ic_novo_concorrente, numero_produtos FROM resumo_categoria_site WHERE "categoria_site" = $1', [cat]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
