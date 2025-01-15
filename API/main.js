@@ -55,7 +55,7 @@ app.get('/api/concorrente/:sku', async (req, res) =>{
   const { sku } = req.params;
   try {
       // console.log('SKU recebido:', sku); // Log do SKU recebido
-      const result = await pool.query('SELECT "PAGUEMENOS" as "paguemenos", "DROGARIASPACHECO" as "drogariaspacheco", "PANVEL" as "panvel", "BELEZANAWEB" as "belezanaweb", "EPOCACOSMETICOS" as "epocacosmeticos", "FARMACIASNISSEI" as "farmaciasnissei", "ULTRAFARMA" as "ultrafarma", "EXTRAFARMA" as "extrafarma", "AMAZON" as "amazon", "DROGARIAVENANCIO" as "drogariavenancio", "DROGARIASAOPAULO" as "drogariasaopaulo", "MAGAZINELUIZA" as "magazineluiza", "ARAUJO" as "araujo" FROM "produtos" WHERE PRODUTO = $1', [sku]);
+      const result = await pool.query('SELECT "PAGUEMENOS" as "paguemenos", "DROGARIASPACHECO" as "drogariaspacheco", "PANVEL" as "panvel", "BELEZANAWEB" as "belezanaweb", "EPOCACOSMETICOS" as "epocacosmeticos", "FARMACIASNISSEI" as "farmaciasnissei", "ULTRAFARMA" as "ultrafarma", "EXTRAFARMA" as "extrafarma", "AMAZON" as "amazon", "DROGARIAVENANCIO" as "drogariavenancio", "DROGARIASAOPAULO" as "drogariasaopaulo", "MAGAZINELUIZA" as "magazineluiza", "ARAUJO" as "araujo" FROM "produtos" WHERE "PRODUTO" = $1', [sku]);
 
       // Verifica se algum produto foi encontrado
       if (result.rows.length === 0) {
