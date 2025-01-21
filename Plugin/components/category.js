@@ -3,15 +3,17 @@ async function handleCategoryPage(){
     setTimeout(async ()=>{
         insertGoogleMaterial()
         expandButton()
-        await handleCategoryProductsCompetidor()
-        await handleCategoryProducts()
-
-        category = document.querySelector('#__next > main > div:nth-child(4) > div > div > h1').innerText;
+    
+        category = document.querySelector('#__next > main > div:nth-child(4) > div > div > h1').innerText || '';
 
         if(category){
             handleHeaderCategoryPage(category)
             
         }
+
+        await handleCategoryProductsCompetidor()
+        await handleCategoryProducts()
+
     }, 3000)
 }
 
@@ -465,8 +467,16 @@ function handleHeaderCategoryPage(category) {
         const h1Element = document.querySelector('#__next > main > div:nth-child(4) > div > div.OneColumnstyles__ColumnStyles-sc-1w8z7r2-0.dULZUW.rd-col-16 > h1');
         
         if (h1Element) {
+
+            // Limpa conteúdo previamente adicionado (se existente)
+            const previousContainer = document.querySelector('.custom-container');
+            if (previousContainer) {
+                previousContainer.remove();
+            }
+
             // Cria o container para o h1 e a nova div ficarem lado a lado
             const containerDiv = document.createElement('div');
+            containerDiv.className = 'custom-container';
             containerDiv.style.cssText = `
                 display: flex;
                 align-items: center;
