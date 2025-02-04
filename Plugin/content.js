@@ -22,6 +22,11 @@ history.replaceState = function (...args) {
 // Detecta mudanças manuais no histórico ou alterações da URL
 window.addEventListener('popstate', onUrlChange);
 
+window.addEventListener("popstate", function (event) {
+    location.reload();
+});
+
+
 function onUrlChange() {
     const currentUrl = window.location.href;
     if (currentUrl !== lastUrl) {
@@ -37,6 +42,7 @@ function checkUrlPeriodically() {
         console.log(`URl alterou ${currentUrl}, ${lastUrl}`)
         window.location.reload();
     }
+
 }
 
 // Configura um timer para verificar a URL a cada 1 segundo
