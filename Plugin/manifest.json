@@ -1,7 +1,7 @@
 {
-    "manifest_version": 4,
+    "manifest_version": 3,
     "name": "DrogaRaia Plugin",
-    "version": "1.0",
+    "version": "1.2",
     "description": "Plugin para adição de informações de produtos e vendas para o site Drogaraia",
     "icons": {
       "48": "./image/logo.png"
