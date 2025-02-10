@@ -16,3 +16,15 @@ https://www.drogaraia.com.br/aspirina-analgesico-adulto-cartela-avulsa-10-compr.
 6) MarketShare
 Item + Categoria
 7) Auditoria produto está no Banner
+
+## Running
+
+```bash
+docker compose up api
+
+# or
+
+npm i
+
+node .
+```

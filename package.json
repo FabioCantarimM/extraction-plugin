@@ -2,18 +2,20 @@
   "name": "extraction-plugin",
   "version": "1.0.0",
   "description": "Plugin de Extração e adição de dados de páginas de ecommerce",
-  "main": "index.js",
+  "main": "API/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Fabio Cantarim",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "csv-parser": "^3.0.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "fs": "^0.0.1-security",
-    "pg": "^8.13.0"
+    "cors": "2.8.5",
+    "csv-parser": "3.0.0",
+    "dotenv": "16.4.5",
+    "express": "4.21.1",
+    "pg": "8.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.9"
   }
 }
