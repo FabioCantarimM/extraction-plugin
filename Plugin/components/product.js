@@ -1,110 +1,126 @@
-function handleProductPage() {
-    setTimeout(() => {
-        insertGoogleMaterial()
-
-        const productId = document.querySelector('#__next > main > div.RaiaProductDescriptionstyles__Global-sc-1ijezxr-0.jsOYDY.rd-container > div > div > div:nth-child(1) > span.RaiaProductDescriptionstyles__Data-sc-1ijezxr-8.fTuOFQ > div').innerText
-            
-        headerProductInfo(productId)
-    }, 5000)
+async function handleProductPage() {
+  const skuElement = getProductSkuElement();
+  if (skuElement?.textContent)
+    updateHeaderWithProductInfo(skuElement.textContent);
 }
 
-function insertGoogleMaterial(){
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
-
-    // Adiciona o link ao <head> do documento
-    document.head.appendChild(link);
+/**
+ * Get the SKU of the displayed product
+ *
+ * @returns the element containing the SKU of the product
+ */
+function getProductSkuElement() {
+  return document.querySelector(
+    "#__next > main > div.RaiaProductDescriptionstyles__Global-sc-1ijezxr-0.jsOYDY.rd-container > div > div > div:nth-child(1) > span.RaiaProductDescriptionstyles__Data-sc-1ijezxr-8.fTuOFQ > div"
+  );
 }
 
+/**
+ *
+ * @param {string} productSku sku of the product
+ * @returns
+ */
+async function updateHeaderWithProductInfo(productSku) {
+  const headerProduct = document.querySelector(
+    "#__next > main > div:nth-child(2)"
+  );
+  if (!headerProduct)
+    return console.warn("Elemento de cabeçalho não encontrado.");
 
-function headerProductInfo(productId){
-    const headerProduct = document.querySelector('#__next > main > div:nth-child(2)')
+  /**
+   * @type {ProductInfo|Error}
+   */
+  const productInfo = await apiCall("fetchProductInfo", productSku).catch(
+    (err) => err
+  );
+  if (!productInfo || "message" in productInfo)
+    return console.error(
+      productInfo["message"] ?? "Informações do produto não encontradas."
+    );
 
-    if (headerProduct) {   
-        // Cria a nova div que ficará ao lado do h1
-        const contentDiv = document.createElement('div');
-        contentDiv.style.cssText = `
-            margin-top: 10px;
-            padding: 15px;
-            border-radius: 3px;
-            background-color: #d3d3d361;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
-            color: #333;
-            display: none;
-            width: 100%;
-            align-self: center;
-            display: flex;
-            justify-content: center;
-        `;
+  const priceValueElement = document.querySelector(
+    "#__next main div:nth-child(3) .ProductPricestyles__Price-sc-1fizsje-4"
+  );
+  const priceValue = extractPrice(priceValueElement?.textContent ?? "0");
+  const lowestPrice = parseFloat(productInfo.lprice);
+  const rbv = parseFloat(productInfo.rbv);
+  const panvel = parseFloat(productInfo.panvel);
+  const ic = parseFloat(productInfo.ic);
 
-        chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
-            const categoryInfo = response;
-            const priceText = document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText;
-            const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
+  const concorrente = formatCurrency(panvel);
+  const lprice = formatCurrency(lowestPrice);
+  const monthS = formatCurrency(rbv);
+  const totalS = rbv / priceValue;
+  const dailySoldMean = formatCurrency((totalS * priceValue) / 30);
+  const weeklySoldMean = formatCurrency((totalS * priceValue) / 4);
 
-            const concorrente = parseFloat(categoryInfo.panvel) || 'Sem Preço'
-            const lprice = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(parseFloat(categoryInfo.lprice.replace('R$', '').trim().replace(',', '.'))) || 'NaN';
-            const ic = categoryInfo.ic || 'NaN';
-            let totalS = parseFloat(categoryInfo.rbv) / priceValue || 0;
-            let todayS = 0;
-            let weekS = 0;
-            if (totalS != 'NaN'){
-                todayS = new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(parseFloat(totalS * priceValue / 30).toFixed(2));
-                weekS = new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(parseFloat(totalS * priceValue / 4).toFixed(2));
-            }
-            const monthS = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(parseFloat(categoryInfo.rbv.replace('R$', '').trim().replace(',', '.')))
+  const { color, trendIcon } = getPriceTrend(priceValue, concorrente);
 
-            let color = 'gray';
-            let thrend = 'trending_up';
+  const container = createContainer([
+    { icon: trendIcon, color, label: "Panvel", value: concorrente },
+    { icon: "trending_down", color: "red", label: "Produtos", value: lprice },
+    {
+      icon: "ssid_chart",
+      color: "green",
+      label: "IC",
+      value: formatCurrency(ic) || "NaN",
+    },
+    { icon: "attach_money", label: "Vendas hoje", value: dailySoldMean },
+    { icon: "attach_money", label: "Vendas s-1", value: weeklySoldMean },
+    { icon: "attach_money", label: "Vendas mês", value: monthS },
+    { icon: "groups_2", label: "Volume de Visitas", value: "Integrar" },
+    { icon: "trending_up", label: "Taxa de conversão", value: "Integrar" },
+  ]);
 
-            if (priceValue > concorrente){
-                color = 'red'
-                thrend = 'trending_down'
-            } 
-            if (priceValue < concorrente){
-                color = 'green'
-                 thrend = 'trending_up'
-            }
+  headerProduct.append(
+    container,
+    document.createElement("br"),
+    document.createElement("br")
+  );
+}
 
-            if (concorrente != 'Sem Preço'){
-                concorrente = new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(parseFloat(concorrente).toFixed(2));
-            }  
-            
+/**
+ *
+ * @param {number} priceValue
+ * @param {string} concorrente
+ * @returns
+ */
+function getPriceTrend(priceValue, concorrente) {
+  if (concorrente === "Sem Preço")
+    return { color: "gray", trendIcon: "trending_up" };
 
-            contentDiv.innerHTML = `
-                <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: ${color};">${thrend}</i><br><span style="font-size: 9px; color: gray;">Panvel</span><br><br><span style="font-size: 10px;font-weight: 800;">${concorrente}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: red;">trending_down</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${lprice}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${ic}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${todayS}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas s-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${weekS}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas mês</span><br><br><span style="font-size: 10px;font-weight: 800;">${monthS}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">groups_2</i><br><span style="font-size: 9px; color: gray;">Volume de Visitas</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
-                <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">trending_up</i><br><span style="font-size: 9px; color: gray;">Taxa de conversão</span><br><br><span style="font-size: 10px;font-weight: 800;">${'Integrar'}</span></div>
-            `;
-        })
+  const concorrenteValue = extractPrice(concorrente);
+  if (priceValue > concorrenteValue)
+    return { color: "red", trendIcon: "trending_down" };
+  if (priceValue < concorrenteValue)
+    return { color: "green", trendIcon: "trending_up" };
 
-        headerProduct.appendChild(contentDiv);
-        headerProduct.appendChild(document.createElement('br'));
-        headerProduct.appendChild(document.createElement('br'));
-    } else {
-        console.log("Elemento h1 não encontrado.");
-    }
+  return { color: "gray", trendIcon: "trending_flat" };
+}
+
+/**
+ *
+ * @param {Array<{icon:string, color?:string, label: string, value:string|number|null}>} items
+ * @returns
+ */
+function createContainer(items) {
+  const container = document.createElement("div");
+  container.style.cssText =
+    "display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; cursor: default;";
+
+  items.forEach(({ icon, color = "gray", label, value }) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.style.cssText = `width: 13.28%; height: 100px; padding: 15px; border-radius: 10px;
+        background-color: #FFF; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center; overflow-wrap: break-word; display: flex; flex-direction: column; align-items: center;`;
+
+    itemDiv.innerHTML = `
+        <i class="material-icons" style="font-size: 25px; color: white; background-color: ${color}; border-radius: 50%; padding: 5px;">${icon}</i>
+        <span style="font-size: 9px; color: gray; margin-top: 5px;">${label}</span>
+        <span style="font-size: 10px; font-weight: 800;">${value}</span>
+      `;
+
+    container.appendChild(itemDiv);
+  });
+  return container;
 }
