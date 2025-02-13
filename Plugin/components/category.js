@@ -161,7 +161,8 @@ function handleCategoryProducts(){
 
                         const concorrente = parseFloat(productInfo.panvel) || 'NaN'
                         const lprice = productInfo.lprice || 'NaN';
-                        const ic = parseFloat(productInfo.ic).toFixed(2) || 'NaN';
+                        let ic = parseFloat(productInfo.ic).toFixed(2) / parseFloat(productInfo.rbv).toFixed(2) || 0;
+                        ic = ic.toFixed(2)
                         let totalS = parseFloat(productInfo.rbv) / priceValue || 'NaN';
                         let todayS = 0;
                         let weekS = 0;

@@ -50,7 +50,8 @@ function headerProductInfo(productId){
                 style: 'currency',
                 currency: 'BRL'
               }).format(parseFloat(categoryInfo.lprice.replace('R$', '').trim().replace(',', '.'))) || 'NaN';
-            const ic = categoryInfo.ic || 'NaN';
+            let ic = parseFloat(categoryInfo.ic).toFixed(2) / parseFloat(categoryInfo.rbv).toFixed(2) || 0;
+            ic = ic.toFixed(2)
             let totalS = parseFloat(categoryInfo.rbv) / priceValue || 0;
             let todayS = 0;
             let weekS = 0;
