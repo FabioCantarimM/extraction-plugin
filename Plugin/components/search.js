@@ -190,6 +190,14 @@ function handleSearchProducts(){
                                 thrend = 'trending_up'
                         }
 
+                        const dtInicio = isNaN(new Date(productInfo.dtInicio)) 
+                            ? "Não Consta" 
+                            : new Date(productInfo.dtInicio).toLocaleDateString("pt-BR");
+
+                        const dtFim = isNaN(new Date(productInfo.dtFim)) 
+                            ? "Não Consta" 
+                            : new Date(productInfo.dtFim).toLocaleDateString("pt-BR");
+
                         // Adiciona o conteúdo estilizado ao messageBox
                         messageBox.innerHTML = `
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
@@ -231,6 +239,36 @@ function handleSearchProducts(){
                                     </span>
                                 </span>
                                 <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS}</span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_available</i>
+                                    <span style="width: 80%;padding-top: 3px;">
+                                        Início da Oferta
+                                    </span>
+                                </span>
+                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtInicio}</span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_busy</i>
+                                    <span style="width: 80%;padding-top: 3px;">
+                                        Fim da Oferta
+                                    </span>
+                                </span>
+                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtFim}</span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
+                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">groups_2</i>
+                                    <span style="width: 80%;padding-top: 3px;">
+                                        Volume de Visitas
+                                    </span>
+                                </span>
+                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
                             </div>
                             <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">

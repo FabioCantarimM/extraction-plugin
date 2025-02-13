@@ -1,0 +1,7 @@
+.vscode/
+docker/
+node_modules/
+Transformation/
+Plugin/
+.env
+*.pem

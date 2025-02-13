@@ -35,7 +35,23 @@ app.get('/api/produtos/:sku', async (req, res) => {
     try {
         console.log('SKU recebido:', sku); // Log do SKU recebido
         // Notabilidade / APP  - Menor Preço Raia / Nome Competidor Raia / MG Mín / Posicionamento Raia / Banner / Status de Preço Raia / Tratativas Raia /  LB% Novo raia / RBV L1M / RBV L1m Pond / Outlier IC /  IC Atual Raia/Concorrente / IC Novo Site  Loja raia ponderado
-        const result = await pool.query('SELECT "PREÇO MARGEM MINIMA RAIA" as lprice, "IC NOVO SITE/LOJA RAIA" as ic, "RBV L1M" as rbv,"PANVEL" AS "panvel", "DT INICIO OFERTA RAIA" AS "dtInicio", "DT FIM OFERTA RAIA" AS "dtFim" FROM "produtos" WHERE "PRODUTO" = $1', [sku]);
+        const result = await pool.query(`
+          SELECT 
+              "PREÇO MARGEM MINIMA RAIA" AS lprice, 
+              COALESCE(
+                  NULLIF("IC NOVO SITE", '')::NUMERIC, 0
+              ) / COALESCE(
+                  NULLIF("LOJA RAIA PONDERADO", '')::NUMERIC, 0
+              ) / NULLIF(
+                  COALESCE("RBV L1M"::NUMERIC, 0), 0
+              ) AS ic, 
+              COALESCE("RBV L1M"::NUMERIC, 0) AS rbv, 
+              "PANVEL" AS panvel, 
+              "DT INICIO OFERTA RAIA" AS dtInicio, 
+              "DT FIM OFERTA RAIA" AS dtFim
+          FROM "produtos"
+          WHERE "PRODUTO" = $1
+      `, [sku]);
 
         // Verifica se algum produto foi encontrado
         if (result.rows.length === 0) {
