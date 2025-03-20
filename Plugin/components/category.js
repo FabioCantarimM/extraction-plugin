@@ -674,7 +674,7 @@ function updateInterface() {
         justify-content: center;
         z-index: 9999;
     `;
-    updateInterfaceDiv.innerText = 'OI';
+
     updateInterfaceDiv.id = "Aqui-Plugin";
 
     // Cria o botão de fechar
@@ -710,15 +710,82 @@ function updateInterface() {
     // Adiciona o botão ao div
     updateInterfaceDiv.appendChild(closeButton);
 
+    // Função para criar o formulário de upload
+    function createFileUploadForm() {
+        const form = document.createElement('form');
+        form.id = 'uploadForm';
+        form.enctype = 'multipart/form-data';
+
+        const label = document.createElement('label');
+        label.setAttribute('for', 'fileInput');
+        label.textContent = 'Selecione o arquivo Excel:';
+
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'fileInput';
+        fileInput.name = 'file';
+        fileInput.accept = '.xlsx, .xls';
+        fileInput.required = true;
+
+        const submitButton = document.createElement('button');
+        submitButton.type = 'submit';
+        submitButton.textContent = 'Enviar';
+
+        const responseMessageDiv = document.createElement('div');
+        responseMessageDiv.id = 'responseMessage';
+
+        // Adiciona os elementos ao formulário
+        form.appendChild(label);
+        form.appendChild(fileInput);
+        form.appendChild(document.createElement('br'));
+        form.appendChild(document.createElement('br'));
+        form.appendChild(submitButton);
+        form.appendChild(responseMessageDiv);
+
+        // Adiciona o evento de envio do formulário
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            
+            if (fileInput.files.length === 0) {
+                document.getElementById('responseMessage').innerText = "Por favor, selecione um arquivo!";
+                return;
+            }
+
+            const file = fileInput.files[0];
+
+            // Envia a mensagem para o background script para processar o upload
+            chrome.runtime.sendMessage(
+                {
+                    action: 'uploadFile',
+                    file: file // Passa o arquivo para o background script
+                },
+                (response) => {
+                    if (response.message) {
+                        document.getElementById('responseMessage').innerText = response.message;
+                    } else {
+                        document.getElementById('responseMessage').innerText = "Erro ao enviar o arquivo.";
+                    }
+                }
+            );
+        });
+
+        return form;
+    }
+
+    // Adiciona o formulário de upload na div
+    updateInterfaceDiv.appendChild(createFileUploadForm());
+
     // Verifica se o elemento já existe para evitar duplicações
     const existingDiv = document.getElementById("Aqui-Plugin");
     if (!existingDiv) {
-        // Adiciona o elemento ao body
         document.body.appendChild(updateInterfaceDiv);
     } else {
         existingDiv.style.display = "flex";
     }
 }
+
 
 function getPrice(item) {
     const selectors = [

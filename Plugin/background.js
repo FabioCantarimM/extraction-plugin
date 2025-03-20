@@ -67,4 +67,30 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         // Indica que a resposta será enviada de forma assíncrona
         return true; // Importante para indicar que a resposta será enviada posteriormente
     }
+
+    if (request.action === 'uploadFile') {
+        const formData = new FormData();
+        formData.append('file', request.file);
+    
+        // Envia o arquivo para o servidor usando fetch
+        fetch('http://ec2-23-20-72-33.compute-1.amazonaws.com:3000/api/upload/produtos', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                sendResponse({ message: data.message });
+            } else {
+                sendResponse({ message: "Erro ao enviar o arquivo." });
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            sendResponse({ message: "Erro ao enviar o arquivo." });
+        });
+    
+        // Indica que a resposta será enviada de forma assíncrona
+        return true; // Importante para indicar que a resposta será enviada posteriormente
+    }
 });
