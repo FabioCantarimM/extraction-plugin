@@ -57,9 +57,15 @@ function expandButtonSearchPage() {
 }
 
 function handleSearchProducts(){
-    const searchElements = document.querySelectorAll('.sc-aac12c5e-2.iBGjMy');
+    const searchElements = document.querySelector('div[data-testid="container-products"]').children;
 
-    searchElements.forEach((item) => {
+    Array.from(searchElements).forEach(item => {
+        if (item.style.display === "none") {
+            item.remove();
+        }
+    });
+
+    for (let item of searchElements) {
         const productId = item.getAttribute('data-item-id');
 
         const checkboxItem = document.createElement('input')
@@ -151,14 +157,10 @@ function handleSearchProducts(){
                     } else {
                         const productInfo = response;
 
-                        let priceText = document.querySelector('.sc-b0bec8a5-0.iSfaqD')|| document.querySelector(".sc-c3b80d8b-0.fKnFjg");
+                        let priceText = getPriceSearch(item)
 
-                        if (priceText != null) {
-                            priceText = priceText.innerText;
-                            console.log("preço obtido")
-                        } else {
+                        if (priceText == null) {
                             priceText = "0,0"
-                            console.log("erro ao obter preço")
                         }
 
                         const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
@@ -302,7 +304,7 @@ function handleSearchProducts(){
         });
 
         // Inserir os novos elementos no item de produto
-        price = item.querySelector('.sc-aac12c5e-3.fwPkfT')
+        price = item.querySelector('.sc-713f0cf6-0.lmjPst')
         item.appendChild(checkboxItem);
         price.parentNode.insertBefore(messageBox, price);
         // item.appendChild(messageBox);
@@ -311,11 +313,17 @@ function handleSearchProducts(){
         divButton.appendChild(toggleButton)
         price.parentNode.insertBefore(divButton, price);
         // item.appendChild(divButton);
-    });
+    };
 }
 
 async function handleSearchProductsCompetidor() {
-    const searchElements = document.querySelectorAll('.sc-aac12c5e-2.iBGjMy');
+    const searchElements = document.querySelector('div[data-testid="container-products"]').children;
+
+    Array.from(searchElements).forEach(item => {
+        if (item.style.display === "none") {
+            item.remove();
+        }
+    });
 
     for (let item of searchElements) {
         const additionalInfo = document.createElement('div');
@@ -462,14 +470,9 @@ async function handleSearchProductsCompetidor() {
             const max = filteredValues.reduce((prev, current) => (prev.value > current.value ? prev : current), {});
             const min = filteredValues.reduce((prev, current) => (prev.value < current.value ? prev : current), {});
 
-            let priceTag = (item.querySelector('[data-qa="price_final_item"]') || 
-                  item.querySelector('div.special-price') || 
-                  item.querySelector('.price-lmpm')) ||
-                  item. querySelector('.sc-c3b80d8b-0.fKnFjg')
+            let priceTag = getPriceSearch(item)
                   
-            if (priceTag != null) {
-                priceTag = priceTag.innerText
-            } else {
+            if (priceTag == null) {
                 priceTag = "0,0"
             }
     
@@ -522,7 +525,7 @@ async function handleSearchProductsCompetidor() {
             infoValueText.innerText = 'NaN';
         }
 
-        price = item.querySelector('.sc-aac12c5e-3.fwPkfT')
+        price = item.querySelector('.sc-713f0cf6-0.lmjPst');
         price.parentNode.insertBefore(additionalInfo, price);
         price.parentNode.insertBefore(document.createElement('hr'), price);
 
@@ -577,8 +580,14 @@ async function handleHeaderSearchPage(category) {
             
             const button = document.createElement('button')
 
-            const searchElements = document.querySelectorAll('.sc-aac12c5e-2.iBGjMy');
-
+            // const searchElements = document.querySelectorAll('.sc-aac12c5e-2.iBGjMy');
+            const searchElements = document.querySelector('div[data-testid="container-products"]').children;
+            
+            Array.from(searchElements).forEach(item => {
+                if (item.style.display === "none") {
+                    item.remove();
+                }
+            });
 
             let agg_todayS = 0
             let agg_weekS = 0
@@ -595,11 +604,9 @@ async function handleHeaderSearchPage(category) {
                     });
                 });
         
-                let priceText = document.querySelector('.sc-b0bec8a5-0.iSfaqD')|| document.querySelector(".sc-c3b80d8b-0.fKnFjg");
+                let priceText = getPriceSearch(item)
 
-                if (priceText != null) {
-                    priceText = priceText.innerText;
-                } else {
+                if (priceText == null) {
                     priceText = "0,0"
                 }
 
@@ -627,7 +634,7 @@ async function handleHeaderSearchPage(category) {
             }
 
                 contentDiv.innerHTML = `
-                    <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${i || '8422'}</span></div>
+                    <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${i}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${agg_ic}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas hoje</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_todayS)}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">attach_money</i><br><span style="font-size: 9px; color: gray;">Vendas S-1</span><br><br><span style="font-size: 10px;font-weight: 800;">${formatCurrency(agg_weekS)}</span></div>
@@ -722,4 +729,20 @@ async function handleHeaderSearchPage(category) {
     } else {
         console.log("Elemento h1 não encontrado.");
     }
+}
+
+function getPriceSearch(item) {
+    const selectors = [
+        '.sc-893b29e9-0.hUuLwk',
+        '.sc-24575961-0.iuEYem',
+    ];
+
+    for (const selector of selectors) {
+        const element = item.querySelector(selector);
+        if (element) {
+            return element.innerText || element.innerHTML;
+        }
+    }
+
+    return null;
 }

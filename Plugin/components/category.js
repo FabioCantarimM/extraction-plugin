@@ -156,7 +156,12 @@ function handleCategoryProducts(){
                         messageBox.innerHTML = `Produto não cadastrado`;
                     } else {
                         const productInfo = response;
-                        const priceText = document.querySelector('#__next > main > div:nth-child(5) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.hcbctD.rd-col-13 > div.ProductGridstyles__ProductGridStyles-sc-1wbcxrt-0.jkDOLa > div:nth-child(1) > div.ProductCardstyles__CardFooter-iu9am6-2.jPqIVV > div.PriceBoxstyles__PriceBoxStyle-sc-17xepza-0.fRQkyG.price-box > div.price.price-final.special-price > span > div').innerText;
+
+                        
+                        const priceText = getPrice(item);
+
+
+
                         const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
 
                         const concorrente = parseFloat(productInfo.panvel) || 'NaN'
@@ -715,3 +720,19 @@ function updateInterface() {
     }
 }
 
+function getPrice(item) {
+    const selectors = [
+        ".price-box > div.price.price-final.special-price > span > div",
+        ".price-box > div > span > div",
+        ".price-box > div.price.price-from > span > div"
+    ];
+
+    for (const selector of selectors) {
+        const element = item.querySelector(selector);
+        if (element) {
+            return element.innerText || element.innerHTML;
+        }
+    }
+
+    return null;
+}
