@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require("multer");
 const xlsx = require("xlsx");
 const os = require('os');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -199,7 +200,7 @@ app.post("/api/upload/produtos", upload.single("file"), async (req, res) => {
   });
 
 app.get("/upload", (req, res) => {
-res.sendFile(path.join(__dirname, "upload.html"));
+res.sendFile(path.join(__dirname, "./upload.html"));
 });
 
 // 📌 ROTA: Buscar concorrentes por SKU
