@@ -165,13 +165,12 @@ function handleSearchProducts(){
 
                         const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
 
-                        const concorrente = parseFloat(productInfo.panvel) || 'NaN  '
                         const lprice = productInfo.lprice || 'NaN';
                         let ic = parseFloat(productInfo.ic).toFixed(2) / parseFloat(productInfo.rbv).toFixed(2) || 0;
                         ic = ic.toFixed(2)
                         let totalS = parseFloat(productInfo.rbv) / priceValue || 'NaN';
-                        let todayS = 0;
-                        let weekS = 0;
+                        let todayS = formatCurrency(0);
+                        let weekS = formatCurrency(0);
                         if (totalS != 'NaN'){
                             const datatd = totalS * priceValue / 30
                             todayS = formatCurrency(datatd)
@@ -181,119 +180,211 @@ function handleSearchProducts(){
                         const datam = productInfo.rbv.replace('R$', '').trim().replace(',', '.')
                         const monthS = formatCurrency(datam)
 
-                        let color = 'gray';
-                        let thrend = 'graphic_eq';
+                        ic =  new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(parseFloat(productInfo.ic.replace('R$', '').trim().replace(',', '.')));
 
-                        if (priceValue > concorrente){
-                            color = 'red'
-                            thrend = 'trending_down'
-                        } 
-                        if (priceValue < concorrente){
-                            color = 'green'
-                                thrend = 'trending_up'
-                        }
-
-                        const dtInicio = isNaN(new Date(productInfo.dtInicio)) 
-                            ? "Não Consta" 
-                            : new Date(productInfo.dtInicio).toLocaleDateString("pt-BR");
-
-                        const dtFim = isNaN(new Date(productInfo.dtFim)) 
-                            ? "Não Consta" 
-                            : new Date(productInfo.dtFim).toLocaleDateString("pt-BR");
+                        icc =  new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(parseFloat(productInfo.ic_concorrente.replace('R$', '').trim().replace(',', '.')));
 
                         // Adiciona o conteúdo estilizado ao messageBox
                         messageBox.innerHTML = `
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i>
-                                    <span style="width:12%"></span>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        IC
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('ic-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Competitividade
                                     </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${ic}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas hoje
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="ic-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">ssid_chart</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Loja
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas S-1
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${ic || 'NaN'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">ssid_chart</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Concorrente
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekS}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${icc  || 'NaN'}</span>
+                                </div>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas mês
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('vendas-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Vendas
                                     </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_available</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Início da Oferta
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="vendas-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas hoje
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtInicio}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_busy</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Fim da Oferta
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS  || 'NaN'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas 7 dias
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtFim}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">groups_2</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Volume de Visitas
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekS  || 'NaN'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas mês
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS  || 'NaN'}</span>
+                                </div>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">groups_2</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Volume de Visitas
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 40%;padding-top: 3px; font-weight: 800;">
+                                    Tratativa
                                     </span>
+                                    <span style="width:60%; font-size: 10px !important; font-weight: 700; text-align: right;">${productInfo.tratativa  || 'Sem TratativaX'}</span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('estrategia-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Estratégia
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="estrategia-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Margem minima
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.minima  || 'NaN'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Posicionamento
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.posicao || 'NaN'}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('funil-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Funil de Vendas
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="funil-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">groups_2</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Volume de visitas
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Pedidos
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.qtd || 'NaN'}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">trending_up</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Taxa de conversão
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('mkt-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Market Share
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="mkt-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">groups_2</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Item
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Categoria
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                            </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">trending_up</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Taxa de conversão
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 40%;padding-top: 3px; font-weight: 800;">
+                                    Auditoria
                                     </span>
+                                    <span style="width:60%; font-size: 10px !important; font-weight: 700;  text-align: right;">Integrar</span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
                         `;
                     }
                 });

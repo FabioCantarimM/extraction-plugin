@@ -185,26 +185,16 @@ function handleCategoryProducts(){
                             style: 'currency',
                             currency: 'BRL'
                           }).format(parseFloat(productInfo.rbv.replace('R$', '').trim().replace(',', '.')));
+                        
+                        ic =  new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(parseFloat(productInfo.ic.replace('R$', '').trim().replace(',', '.')));
 
-                        let color = 'gray';
-                        let thrend = 'graphic_eq';
-
-                        if (priceValue > concorrente){
-                            color = 'red'
-                            thrend = 'trending_down'
-                        } 
-                        if (priceValue < concorrente){
-                            color = 'green'
-                                thrend = 'trending_up'
-                        }
-
-                        const dtInicio = isNaN(new Date(productInfo.dtInicio)) 
-                            ? "Não Consta" 
-                            : new Date(productInfo.dtInicio).toLocaleDateString("pt-BR");
-
-                        const dtFim = isNaN(new Date(productInfo.dtFim)) 
-                            ? "Não Consta" 
-                            : new Date(productInfo.dtFim).toLocaleDateString("pt-BR");
+                        icc =  new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(parseFloat(productInfo.ic_concorrente.replace('R$', '').trim().replace(',', '.')));
 
                         // Adiciona o conteúdo estilizado ao messageBox
                         messageBox.innerHTML = `
@@ -226,7 +216,7 @@ function handleCategoryProducts(){
                                             IC Loja
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.ic}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${ic || 'NaN'}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
                                     <span style="color: black; font-size: 10px; width: 60%; display: contents;">
@@ -236,7 +226,7 @@ function handleCategoryProducts(){
                                             IC Concorrente
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.ic_concorrente}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${icc  || 'NaN'}</span>
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('vendas-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
@@ -257,7 +247,7 @@ function handleCategoryProducts(){
                                             Vendas hoje
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS  || 'NaN'}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
                                     <span style="color: black; font-size: 10px; width: 60%; display: contents;">
@@ -267,7 +257,7 @@ function handleCategoryProducts(){
                                             Vendas 7 dias
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekSyS}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekS  || 'NaN'}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
                                     <span style="color: black; font-size: 10px; width: 60%; display: contents;">
@@ -277,7 +267,7 @@ function handleCategoryProducts(){
                                             Vendas mês
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS  || 'NaN'}</span>
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
@@ -285,7 +275,7 @@ function handleCategoryProducts(){
                                     <span style="width: 40%;padding-top: 3px; font-weight: 800;">
                                     Tratativa
                                     </span>
-                                    <span style="width:60%; font-size: 10px !important; font-weight: 700; text-align: right;">${productInfo.trativa}</span>
+                                    <span style="width:60%; font-size: 10px !important; font-weight: 700; text-align: right;">${productInfo.tratativa  || 'Sem TratativaX'}</span>
                                 </span>
                             </div>
                             <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
@@ -307,7 +297,7 @@ function handleCategoryProducts(){
                                             Margem minima
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.minima}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.minima  || 'NaN'}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
                                     <span style="color: black; font-size: 10px; width: 60%; display: contents;">
@@ -317,7 +307,7 @@ function handleCategoryProducts(){
                                             Posicionamento
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${posicao}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.posicao || 'NaN'}</span>
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('funil-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
@@ -348,7 +338,7 @@ function handleCategoryProducts(){
                                             Pedidos
                                         </span>
                                     </span>
-                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.qtd}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.qtd || 'NaN'}</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
                                     <span style="color: black; font-size: 10px; width: 60%; display: contents;">
