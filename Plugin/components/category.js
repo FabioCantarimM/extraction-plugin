@@ -647,7 +647,8 @@ function handleHeaderCategoryPage(category) {
 
             chrome.runtime.sendMessage({ action: 'fetchCategoryInfo', productId: category }, (response) => {
                 const categoryInfo = response;
-                const rbv = parseFloat(categoryInfo.soma_rbv_l1m).toFixed(2) || 'NaN';
+                let rbv = parseFloat(categoryInfo.soma_rbv_l1m).toFixed(2);
+                if(rbv == 'NaN'){rbv = 0}
                 const daily = new Intl.NumberFormat('pt-BR', {
                                 style: 'currency',
                                 currency: 'BRL'
@@ -660,8 +661,8 @@ function handleHeaderCategoryPage(category) {
                     style: 'currency',
                     currency: 'BRL'
                   }).format(parseFloat(rbv).toFixed(2));
-                const icl = parseFloat(categoryInfo.media_ic_atual_site_loja_raia).toFixed(2) || 'NaN';
-
+                let icl = parseFloat(categoryInfo.media_ic_atual_site_loja_raia).toFixed(2) || '0';
+                if (icl == 'NaN'){icl = 0}
                 contentDiv.innerHTML = `
                     <div style="width:13.28%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;">loyalty</i><br><span style="font-size: 9px; color: gray;">Produtos</span><br><br><span style="font-size: 10px;font-weight: 800;">${totalProducts || '8422'}</span></div>
                     <div style="width:13.28%; height:100px; padding: 15px; margin-left:10px; border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i><br><span style="font-size: 9px; color: gray;">IC</span><br><br><span style="font-size: 10px;font-weight: 800;">${icl}</span></div>

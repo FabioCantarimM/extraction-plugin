@@ -18,7 +18,12 @@ function checkUrlAndExecute() {
 
     // Se tiver apenas um elemento após o split
     if (pathParts.length === 1) {
-        handleProductPage();
+        const elemento = document.querySelector('h1[data-qa="my-account-title"]');
+        if (elemento) {
+            handleCategoryPage();
+        } else {
+            handleProductPage();
+        }
     } 
     // Se tiver mais de um elemento, passa o vetor de resultados
     else if (pathParts.length > 1) {
