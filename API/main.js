@@ -198,6 +198,10 @@ app.post("/api/upload/produtos", upload.single("file"), async (req, res) => {
     }
   });
 
+app.get("/upload", (req, res) => {
+res.sendFile(path.join(__dirname, "upload.html"));
+});
+
 // 📌 ROTA: Buscar concorrentes por SKU
 app.get('/api/concorrente/:sku', async (req, res) => {
     const { sku } = req.params;
