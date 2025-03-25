@@ -16,7 +16,6 @@
     "background": {
       "service_worker": "background.js",
       "scritps":[
-        "components/upload.js",
         "components/search.js",
         "components/product.js", 
         "components/category.js"
@@ -30,7 +29,6 @@
           "tools/tags.js",
           "tools/index.js",
           "tools/format.js",
-          "components/upload.js",
           "components/search.js",
           "components/product.js", 
           "components/category.js",

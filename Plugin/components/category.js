@@ -208,87 +208,199 @@ function handleCategoryProducts(){
 
                         // Adiciona o conteúdo estilizado ao messageBox
                         messageBox.innerHTML = `
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: green;">ssid_chart</i>
-                                    <span style="width:12%"></span>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        IC
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('ic-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Competitividade
                                     </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${ic}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas hoje
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="ic-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">ssid_chart</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Loja
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas S-1
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.ic}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">ssid_chart</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            IC Concorrente
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekS}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.ic_concorrente}</span>
+                                </div>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">attach_money</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Vendas mês
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('vendas-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Vendas
                                     </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_available</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Início da Oferta
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="vendas-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas hoje
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtInicio}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">event_busy</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Fim da Oferta
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${todayS}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas 7 dias
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${dtFim}</span>
-                            </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">groups_2</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Volume de Visitas
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${weekSyS}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Vendas mês
+                                        </span>
                                     </span>
-                                </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${monthS}</span>
+                                </div>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="color: gray; font-size: 10px; width: 60%; display: contents;">
-                                    <i class="material-icons" style="font-size: 15px !important;!i;!;!;font-weight: 800 !important;!i;!;width: 20%;">trending_up</i>
-                                    <span style="width: 80%;padding-top: 3px;">
-                                        Taxa de conversão
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 40%;padding-top: 3px; font-weight: 800;">
+                                    Tratativa
                                     </span>
+                                    <span style="width:60%; font-size: 10px !important; font-weight: 700; text-align: right;">${productInfo.trativa}</span>
                                 </span>
-                                <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${'Integrar'}</span>
                             </div>
-                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;margin-bottom: 12px;"/>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('estrategia-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Estratégia
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="estrategia-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Margem minima
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.minima}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Posicionamento
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${posicao}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('funil-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Funil de Vendas
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="funil-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">groups_2</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Volume de visitas
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Pedidos
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">${productInfo.qtd}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">trending_up</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Taxa de conversão
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;" onclick="var content = document.getElementById('mkt-content-${productId}'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 95%;padding-top: 3px; font-weight: 800;">
+                                    Market Share
+                                    </span>
+                                    <span style="width:5%; font-size: 14px !important; font-weight: 800;"> + </span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
+                            <div id="mkt-content-${productId}" style="display: none;">
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">groups_2</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Item
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; background-color:#d8d8d8; border: 1px solid #a2a2a23b; padding: 3px 3px 3px 3px;">
+                                    <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                        <i class="material-icons" style="font-size: 15px !important;font-weight: 800 !important;">attach_money</i>
+                                        <span style="width:12%"></span>
+                                        <span style="width: 80%;padding-top: 3px;">
+                                            Categoria
+                                        </span>
+                                    </span>
+                                    <span style="text-align:end; width: 40%;font-size: 10px; font-weight: 800;padding-top: 3px;">Integrar</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: black; font-size: 10px; width: 60%; display: contents;">
+                                    <span style="width: 40%;padding-top: 3px; font-weight: 800;">
+                                    Auditoria
+                                    </span>
+                                    <span style="width:60%; font-size: 10px !important; font-weight: 700;  text-align: right;">Integrar</span>
+                                </span>
+                            </div>
+                            <hr style="border-color: #a2a2a23b;height: 1px;margin-top: -5px;"/>
                         `;
                     }
                 });
@@ -403,7 +515,7 @@ async function handleCategoryProductsCompetidor() {
         sinfoKeyText.appendChild(sdescript);
         sinfoKeyText.style.cssText = `
             font-size: 10px;
-            font-weight: 800;
+            font-weight: 600;
             color: black;
             display: contents;
         `;
@@ -745,30 +857,38 @@ function updateInterface() {
         // Adiciona o evento de envio do formulário
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-
+        
             const fileInput = document.getElementById('fileInput');
             
             if (fileInput.files.length === 0) {
                 document.getElementById('responseMessage').innerText = "Por favor, selecione um arquivo!";
                 return;
             }
+        
+            // Cria o FormData para enviar o arquivo
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            
 
-            const file = fileInput.files[0];
-
-            // Envia a mensagem para o background script para processar o upload
-            chrome.runtime.sendMessage(
-                {
-                    action: 'uploadFile',
-                    file: file // Passa o arquivo para o background script
-                },
-                (response) => {
-                    if (response.message) {
-                        document.getElementById('responseMessage').innerText = response.message;
-                    } else {
-                        document.getElementById('responseMessage').innerText = "Erro ao enviar o arquivo.";
-                    }
+            // Realiza a requisição para a rota de upload
+            fetch('http://192.168.15.122:3000/api/upload/produtos', {
+            // fetch('http://ec2-23-20-72-33.compute-1.amazonaws.com:3000/api/upload/produtos', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to upload file');
                 }
-            );
+                return response.json(); // Converte a resposta para JSON
+            })
+            .then(data => {
+                // Envia os dados de volta para o script de conteúdo
+                sendResponse(data);
+            })
+            .catch(error => {
+                sendResponse({ error: error.message });
+            });
         });
 
         return form;
@@ -803,3 +923,4 @@ function getPrice(item) {
 
     return null;
 }
+

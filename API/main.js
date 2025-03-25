@@ -60,6 +60,11 @@ app.get('/api/produtos/:sku', async (req, res) => {
             `SELECT 
                 "PREÇO MARGEM MINIMA RAIA" as lprice,  
                 "IC NOVO SITE/LOJA RAIA PONDERADO" as ic, 
+                "IC NOVO RAIA/CONCORRENTE POND" as ic_concorrente,
+                "TRATATIVAS RAIA" as tratativa,
+                "MG MÍN RAIA" as minima,
+                "POSICIONAMENTO RAIA" as posicao,
+                "QT UNIDADE VENDIDA L1M" as qtd,
                 "RBV L1M" as rbv, 
                 "PANVEL" AS panvel, 
                 "DT INICIO OFERTA RAIA" AS dtInicio, 
