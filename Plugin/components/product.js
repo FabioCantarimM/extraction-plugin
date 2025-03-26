@@ -42,61 +42,71 @@ function headerProductInfo(productId){
 
         chrome.runtime.sendMessage({ action: 'fetchProductInfo', productId: productId }, (response) => {
             const categoryInfo = response;
-            const priceText = document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText;
-            const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
 
-            const concorrente = parseFloat(categoryInfo.panvel) || 'Sem Preço'
-            const lprice = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(parseFloat(categoryInfo.lprice.replace('R$', '').trim().replace(',', '.'))) || 'NaN';
-            let ic = parseFloat(categoryInfo.ic).toFixed(2) / parseFloat(categoryInfo.rbv).toFixed(2) || 0;
-            ic = ic.toFixed(2)
-            let totalS = parseFloat(categoryInfo.rbv) / priceValue || 0;
-            let todayS = 0;
-            let weekS = 0;
-            if (totalS != 'NaN'){
-                todayS = new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(parseFloat(totalS * priceValue / 30).toFixed(2));
-                weekS = new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }).format(parseFloat(totalS * priceValue / 4).toFixed(2));
-            }
-            const monthS = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-              }).format(parseFloat(categoryInfo.rbv.replace('R$', '').trim().replace(',', '.')))
-
+            let concorrente = 'Sem Dados';
+            let lprice = 'Sem Dados';
+            let ic = 'Sem Dados';
+            let todayS = 'Sem Dados';
+            let weekS = 'Sem Dados';
+            let monthS = 'Sem Dados';
+            let dtInicio = 'Sem Dados';
+            let dtFim = 'Sem Dados';
             let color = 'gray';
             let thrend = 'trending_up';
-            
-            
-            if (concorrente != 'Sem Preço'){
-                if (priceValue > concorrente){
-                    color = 'red'
-                    thrend = 'trending_down'
-                } 
-                if (priceValue < concorrente){
-                    color = 'green'
-                     thrend = 'trending_up'
-                }
-    
-                concorrente = new Intl.NumberFormat('pt-BR', {
+
+            if (!categoryInfo.error){
+                const priceText = document.querySelector('#__next > main > div:nth-child(3) > div > div.TwoColumnsstyles__SecondColumnStyles-sc-46q9v-1.gISnij.rd-col-7 > div > div.ProductPageRaiastyles__PriceContainer-sc-1mwseac-4.gWicpg > div.price-and-tag > div.ProductPricestyles__Container-sc-1fizsje-0.ipdflv > span.ProductPricestyles__Price-sc-1fizsje-4.fHTFqL').innerText;
+                const priceValue = parseFloat(priceText.replace('R$', '').trim().replace(',', '.'));
+
+                concorrente = parseFloat(categoryInfo.panvel) || 'Sem Preço'
+                lprice = new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
-                }).format(parseFloat(concorrente).toFixed(2));
-            }  
-            
-            const dtInicio = isNaN(new Date(categoryInfo.dtInicio)) 
-                            ? "Não Consta" 
-                            : new Date(categoryInfo.dtInicio).toLocaleDateString("pt-BR");
+                }).format(parseFloat(categoryInfo.lprice.replace('R$', '').trim().replace(',', '.'))) || 'NaN';
+                ic = parseFloat(categoryInfo.ic).toFixed(2) / parseFloat(categoryInfo.rbv).toFixed(2) || 0;
+                ic = ic.toFixed(2)
+                totalS = parseFloat(categoryInfo.rbv) / priceValue || 0;
+                todayS = 0;
+                weekS = 0;
+                if (totalS != 'NaN'){
+                    todayS = new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(parseFloat(totalS * priceValue / 30).toFixed(2));
+                    weekS = new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(parseFloat(totalS * priceValue / 4).toFixed(2));
+                }
+                const monthS = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(parseFloat(categoryInfo.rbv.replace('R$', '').trim().replace(',', '.')))
+                
+                if (concorrente != 'Sem Preço'){
+                    if (priceValue > concorrente){
+                        color = 'red'
+                        thrend = 'trending_down'
+                    } 
+                    if (priceValue < concorrente){
+                        color = 'green'
+                        thrend = 'trending_up'
+                    }
+        
+                    concorrente = new Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(parseFloat(concorrente).toFixed(2));
+                }  
+                
+                const dtInicio = isNaN(new Date(categoryInfo.dtInicio)) 
+                                ? "Não Consta" 
+                                : new Date(categoryInfo.dtInicio).toLocaleDateString("pt-BR");
 
-            const dtFim = isNaN(new Date(categoryInfo.dtFim)) 
-                ? "Não Consta" 
-                : new Date(categoryInfo.dtFim).toLocaleDateString("pt-BR");
+                const dtFim = isNaN(new Date(categoryInfo.dtFim)) 
+                    ? "Não Consta" 
+                    : new Date(categoryInfo.dtFim).toLocaleDateString("pt-BR");
+            }
 
             contentDiv.innerHTML = `
                 <div style="width:10%; height:100px; padding: 15px;border-radius: 10px;background-color: #FFF;border: 1px solid rgb(204, 204, 204);box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px;color: rgb(51, 51, 51);align-self: center;display: block;text-align: center; overflow-wrap: break-word;"><i class="material-icons" style="font-size: 25px !important;!i;!;!;font-weight: 800 !important;!i;!;color: white;background-color: ${color};">${thrend}</i><br><span style="font-size: 9px; color: gray;">Panvel</span><br><br><span style="font-size: 10px;font-weight: 800;">${concorrente}</span></div>

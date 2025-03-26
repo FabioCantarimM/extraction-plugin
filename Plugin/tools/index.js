@@ -18,7 +18,7 @@ function checkUrlAndExecute() {
 
     // Se tiver apenas um elemento após o split
     if (pathParts.length === 1) {
-        const elemento = document.querySelector('h1[data-qa="my-account-title"]');
+        const elemento = document.querySelector('div[data-qa="container_category"]');
         if (elemento) {
             handleCategoryPage();
         } else {
