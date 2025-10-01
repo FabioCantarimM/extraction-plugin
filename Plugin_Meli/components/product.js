@@ -62,7 +62,6 @@ function headerProductInfo(){
         `;
 
         headerProduct.appendChild(contentDiv);
-        headerProduct.appendChild(document.createElement('br'));
     } else {
         console.log("Elemento h1 não encontrado.");
     }
