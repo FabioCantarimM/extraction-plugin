@@ -5,10 +5,11 @@
             "type": "chrome",
             "request": "launch",
             "name": "Debug Chrome Extension",
-            "url": "https://www.drogaraia.com.br/", // Deixe como está se não houver uma URL inicial
-            "webRoot": "${workspaceFolder}/Plugin",
+            "url": "https://www.mercadolivre.com.br/loja/vanish", // Deixe como está se não houver uma URL inicial
+            "webRoot": "${workspaceFolder}/Plugin_Melo",
             "runtimeArgs": [
-                "--load-extension=${workspaceFolder}/Plugin", // Caminho para a extensão
+                "--disable-extensions-except=${workspaceFolder}",
+                "--load-extension=${workspaceFolder}/Plugin_Meli", // Caminho para a extensão
                 "--remote-debugging-port=9222"        // Porta de depuração
             ]
         }

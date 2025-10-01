@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Vanish Plugin",
+  "version": "1.5",
+  "description": "Plugin para adição de informações de produtos e vendas para Marca Vanish",
+  "icons": {
+    "48": "image/logo.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://www.mercadolivre.com.br/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.mercadolivre.com.br/*"],
+      "js": [
+        "tools/url.js",
+        "tools/tags.js",
+        "tools/index.js",
+        "tools/format.js",
+        "components/loja.js",
+        "components/product.js",
+        "content.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_icon": "image/logo.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+  }
+}
